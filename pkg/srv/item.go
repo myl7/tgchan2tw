@@ -19,7 +19,7 @@ func handleItem(item *gofeed.Item) error {
 		return nil
 	}
 
-	body, imageUrls, replyGuid, err := filterText(item.Content)
+	body, imageUrls, replyGuid, err := filterText(item.Description)
 	if err != nil {
 		return err
 	}
@@ -55,7 +55,7 @@ func filterText(body string) (string, []string, string, error) {
 
 	var imageUrls []string
 	d := goquery.NewDocumentFromNode(h)
-	d.Find("img").Each(func(_ int, s *goquery.Selection) {
+	d.Find("body > :not(blockquote) img").Each(func(_ int, s *goquery.Selection) {
 		src, ok := s.Attr("src")
 		if !ok {
 			return
@@ -65,15 +65,9 @@ func filterText(body string) (string, []string, string, error) {
 	})
 
 	isForward := false
-	excludeNext := false
 	forwardLink := ""
 	var blocks []string
 	d.Find("body > p").Each(func(_ int, s *goquery.Selection) {
-		if excludeNext {
-			excludeNext = false
-			return
-		}
-
 		t := s.Text()
 		t = strings.Replace(t, "<br>", "\n", -1)
 		ts := strings.Split(t, "\n")
@@ -81,12 +75,12 @@ func filterText(body string) (string, []string, string, error) {
 			ts[i] = strings.TrimSpace(ts[i])
 		}
 		t = strings.Join(ts, "\n")
+		t = strings.TrimSpace(t)
 
 		if strings.HasPrefix(t, "Forwarded From") {
 			href, ok := s.Find("a").Attr("href")
 			if ok {
 				isForward = true
-				excludeNext = true
 				forwardLink = href
 			}
 		}
@@ -94,11 +88,12 @@ func filterText(body string) (string, []string, string, error) {
 		blocks = append(blocks, t)
 	})
 
-	res := ""
+	var res string
 	if isForward {
-		res += "Forwarded from " + forwardLink + "\n"
+		res = "Forwarded from " + forwardLink
+	} else {
+		res = strings.Join(blocks, "\n")
 	}
-	res += strings.Join(blocks, "\n")
 
 	return res, imageUrls, "", nil
 }
