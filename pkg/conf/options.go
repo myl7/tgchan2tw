@@ -16,7 +16,7 @@ var PostFilterOut = env("POST_FILTER_OUT", strPtr("#notwfwd"))
 // Unit: s.
 var PollInterval = envInt("POLL_INTERVAL", intPtr(360))
 
-var DBPath = env("DB_PATH", strPtr("db.sqlite"))
+var DBPath = env("DB_PATH", strPtr("/db/db.sqlite"))
 
 var TwConsumerKey = env("TW_CONSUMER_KEY", nil)
 var TwConsumerSecret = env("TW_CONSUMER_SECRET", nil)
