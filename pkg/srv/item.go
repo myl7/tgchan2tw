@@ -88,6 +88,15 @@ func filterText(body string) (string, []string, string, error) {
 		blocks = append(blocks, t)
 	})
 
+	replyGuid := ""
+	r := d.Find("body :first-child")
+	if goquery.NodeName(r) == "blockquote" {
+		href, ok := r.Find("a").Attr("href")
+		if ok {
+			replyGuid = href
+		}
+	}
+
 	var res string
 	if isForward {
 		res = "Forwarded from " + forwardLink
@@ -95,5 +104,5 @@ func filterText(body string) (string, []string, string, error) {
 		res = strings.Join(blocks, "\n")
 	}
 
-	return res, imageUrls, "", nil
+	return res, imageUrls, replyGuid, nil
 }
