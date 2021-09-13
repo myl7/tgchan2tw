@@ -30,7 +30,7 @@ func poll() error {
 		return err
 	}
 
-	for i := range items {
+	for i := len(items) - 1; i >= 0; i-- {
 		item := items[i]
 		err := handleItem(item)
 		if err != nil {
