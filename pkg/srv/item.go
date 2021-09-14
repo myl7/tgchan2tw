@@ -55,7 +55,17 @@ func filterText(body string) (string, []string, string, error) {
 
 	var imageUrls []string
 	d := goquery.NewDocumentFromNode(h)
-	d.Find("body > :not(blockquote) img").Each(func(_ int, s *goquery.Selection) {
+	d.Find("img").Each(func(_ int, s *goquery.Selection) {
+		ok := true
+		s.Parents().Each(func(_ int, s *goquery.Selection) {
+			if goquery.NodeName(s) == "blockquote" {
+				ok = false
+			}
+		})
+		if !ok {
+			return
+		}
+
 		src, ok := s.Attr("src")
 		if !ok {
 			return
