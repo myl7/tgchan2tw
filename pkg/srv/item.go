@@ -109,7 +109,7 @@ func filterText(body string) (string, []string, string, error) {
 
 	var res string
 	if isForward {
-		res = "Forwarded from " + forwardLink
+		res = forwardLink
 	} else {
 		res = strings.Join(blocks, "\n")
 	}
