@@ -11,6 +11,7 @@ import (
 	"io/ioutil"
 	"mime/multipart"
 	"net/http"
+	"os"
 )
 
 func getTwHttpClient() *http.Client {
@@ -24,7 +25,16 @@ func getTw() *twitter.Client {
 	return twitter.NewClient(httpClient)
 }
 
-func Tweet(body string, images []io.ReadCloser, replyTo int64) (i int64, e error) {
+func Tweet(body string, imageUrls []string, replyTo int64) (int64, error) {
+	images, tmpDir, err := tmpDl(imageUrls)
+	if err != nil {
+		return 0, err
+	}
+
+	defer func(path string) {
+		_ = os.RemoveAll(path)
+	}(tmpDir)
+
 	var mediaIds []int64
 	for i := range images {
 		image := images[i]

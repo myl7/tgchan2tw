@@ -7,7 +7,6 @@ import (
 	"github.com/myl7/tgchan2tw/pkg/pub"
 	"log"
 	"net/url"
-	"os"
 	"path"
 	"strconv"
 	"strings"
@@ -90,16 +89,7 @@ func handleItem(item *gofeed.Item) error {
 		}
 	}
 
-	images, dir, err := downloadImages(imageUrls)
-	if err != nil {
-		return err
-	}
-
-	defer func(path string) {
-		_ = os.RemoveAll(path)
-	}(dir)
-
-	id, err = pub.Tweet(body, images, replyTo)
+	id, err = pub.Tweet(body, imageUrls, replyTo)
 	if err != nil {
 		return err
 	}
