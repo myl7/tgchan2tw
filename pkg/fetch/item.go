@@ -1,4 +1,4 @@
-package srv
+package fetch
 
 import (
 	"bytes"

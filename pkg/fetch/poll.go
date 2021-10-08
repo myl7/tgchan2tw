@@ -1,4 +1,4 @@
-package srv
+package fetch
 
 import (
 	"github.com/mmcdole/gofeed"
@@ -11,9 +11,9 @@ import (
 	"time"
 )
 
-func Start() error {
+func Poll() error {
 	for true {
-		err := poll()
+		err := pollRound()
 		if err != nil {
 			log.Println(err)
 		}
@@ -24,7 +24,7 @@ func Start() error {
 	return nil
 }
 
-func poll() error {
+func pollRound() error {
 	items, err := reqRsshub()
 	if err != nil {
 		return err

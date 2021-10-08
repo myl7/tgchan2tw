@@ -1,12 +1,12 @@
 package main
 
 import (
-	"github.com/myl7/tgchan2tw/pkg/srv"
+	"github.com/myl7/tgchan2tw"
 	"log"
 )
 
 func main() {
-	err := srv.Start()
+	err := tgchan2tw.Run()
 	if err != nil {
 		log.Fatalln(err)
 	}
