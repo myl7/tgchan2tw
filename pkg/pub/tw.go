@@ -1,4 +1,4 @@
-package fetch
+package pub
 
 import (
 	"bufio"
@@ -11,7 +11,6 @@ import (
 	"io/ioutil"
 	"mime/multipart"
 	"net/http"
-	"os"
 )
 
 func getTwHttpClient() *http.Client {
@@ -25,54 +24,7 @@ func getTw() *twitter.Client {
 	return twitter.NewClient(httpClient)
 }
 
-func downloadImages(imageUrls []string) ([]io.ReadCloser, string, error) {
-	dir, err := ioutil.TempDir("/tmp", "tgchan2tw")
-	if err != nil {
-		return nil, "", err
-	}
-
-	var images []io.ReadCloser
-	for i := range imageUrls {
-		url := imageUrls[i]
-		res, err := http.Get(url)
-		if err != nil {
-			return nil, "", err
-		}
-
-		f, err := ioutil.TempFile(dir, "image")
-		if err != nil {
-			return nil, "", err
-		}
-
-		_, err = bufio.NewReader(res.Body).WriteTo(f)
-		if err != nil {
-			return nil, "", err
-		}
-
-		_, err = f.Seek(0, 0)
-		if err != nil {
-			return nil, "", err
-		}
-
-		images = append(images, f)
-	}
-
-	return images, dir, nil
-}
-
-func tweet(body string, imageUrls []string, replyTo int64) (i int64, e error) {
-	images, dir, err := downloadImages(imageUrls)
-	if err != nil {
-		return 0, err
-	}
-
-	defer func(path string) {
-		err := os.RemoveAll(path)
-		if err != nil {
-			e = err
-		}
-	}(dir)
-
+func Tweet(body string, images []io.ReadCloser, replyTo int64) (i int64, e error) {
 	var mediaIds []int64
 	for i := range images {
 		image := images[i]
@@ -105,7 +57,11 @@ func tweetText(body string, mediaIds []int64, replyTo int64) (*twitter.Tweet, er
 	return t, nil
 }
 
-func tweetImage(image io.Reader) (int64, error) {
+func tweetImage(image io.ReadCloser) (int64, error) {
+	defer func(image io.ReadCloser) {
+		_ = image.Close()
+	}(image)
+
 	client := getTwHttpClient()
 	url := "https://upload.twitter.com/1.1/media/upload.json"
 

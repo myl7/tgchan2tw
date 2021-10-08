@@ -1,50 +1,15 @@
 package fetch
 
 import (
+	"bufio"
 	"bytes"
 	"github.com/PuerkitoBio/goquery"
-	"github.com/mmcdole/gofeed"
-	"github.com/myl7/tgchan2tw/pkg/db"
 	"golang.org/x/net/html"
+	"io"
+	"io/ioutil"
+	"net/http"
 	"strings"
 )
-
-func handleItem(item *gofeed.Item) error {
-	id, err := db.CheckMsg(item.GUID)
-	if err != nil {
-		return err
-	}
-
-	if id != 0 {
-		return nil
-	}
-
-	body, imageUrls, replyGuid, err := filterText(item.Description)
-	if err != nil {
-		return err
-	}
-
-	replyTo := int64(0)
-	if replyGuid != "" {
-		var err error
-		replyTo, err = db.CheckMsg(replyGuid)
-		if err != nil {
-			return err
-		}
-	}
-
-	id, err = tweet(body, imageUrls, replyTo)
-	if err != nil {
-		return err
-	}
-
-	err = db.SetMsg(id, item.GUID)
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
 
 func filterText(body string) (string, []string, string, error) {
 	b := bytes.NewBufferString("<body>" + body + "</body>")
@@ -123,4 +88,39 @@ func filterText(body string) (string, []string, string, error) {
 	}
 
 	return res, imageUrls, replyGuid, nil
+}
+
+func downloadImages(imageUrls []string) ([]io.ReadCloser, string, error) {
+	dir, err := ioutil.TempDir("/tmp", "tgchan2tw")
+	if err != nil {
+		return nil, "", err
+	}
+
+	var images []io.ReadCloser
+	for i := range imageUrls {
+		url := imageUrls[i]
+		res, err := http.Get(url)
+		if err != nil {
+			return nil, "", err
+		}
+
+		f, err := ioutil.TempFile(dir, "image")
+		if err != nil {
+			return nil, "", err
+		}
+
+		_, err = bufio.NewReader(res.Body).WriteTo(f)
+		if err != nil {
+			return nil, "", err
+		}
+
+		_, err = f.Seek(0, 0)
+		if err != nil {
+			return nil, "", err
+		}
+
+		images = append(images, f)
+	}
+
+	return images, dir, nil
 }

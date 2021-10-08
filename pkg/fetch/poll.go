@@ -3,8 +3,11 @@ package fetch
 import (
 	"github.com/mmcdole/gofeed"
 	"github.com/myl7/tgchan2tw/pkg/conf"
+	"github.com/myl7/tgchan2tw/pkg/db"
+	"github.com/myl7/tgchan2tw/pkg/pub"
 	"log"
 	"net/url"
+	"os"
 	"path"
 	"strconv"
 	"strings"
@@ -61,4 +64,50 @@ func reqRsshub() ([]*gofeed.Item, error) {
 	}
 
 	return feed.Items, nil
+}
+
+func handleItem(item *gofeed.Item) error {
+	id, err := db.CheckMsg(item.GUID)
+	if err != nil {
+		return err
+	}
+
+	if id != 0 {
+		return nil
+	}
+
+	body, imageUrls, replyGuid, err := filterText(item.Description)
+	if err != nil {
+		return err
+	}
+
+	replyTo := int64(0)
+	if replyGuid != "" {
+		var err error
+		replyTo, err = db.CheckMsg(replyGuid)
+		if err != nil {
+			return err
+		}
+	}
+
+	images, dir, err := downloadImages(imageUrls)
+	if err != nil {
+		return err
+	}
+
+	defer func(path string) {
+		_ = os.RemoveAll(path)
+	}(dir)
+
+	id, err = pub.Tweet(body, images, replyTo)
+	if err != nil {
+		return err
+	}
+
+	err = db.SetMsg(id, item.GUID)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
