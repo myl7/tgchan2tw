@@ -10,12 +10,17 @@ func handleItems(items []*gofeed.Item) error {
 	for i := len(items) - 1; i >= 0; i-- {
 		item := items[i]
 
-		id, err := db.CheckMsg(item.GUID)
+		itemId, err := guid2Id(item.GUID)
 		if err != nil {
 			return err
 		}
 
-		if id != 0 {
+		msgIds, err := db.CheckItem(itemId)
+		if err != nil {
+			return err
+		}
+
+		if len(msgIds) != 0 {
 			continue
 		}
 
@@ -26,10 +31,18 @@ func handleItems(items []*gofeed.Item) error {
 
 		replyTo := int64(0)
 		if replyGuid != "" {
-			var err error
-			replyTo, err = db.CheckMsg(replyGuid)
+			replyId, err := guid2Id(replyGuid)
 			if err != nil {
 				return err
+			}
+
+			msgIds, err = db.CheckItem(replyId)
+			if err != nil {
+				return err
+			}
+
+			if len(msgIds) > 0 {
+				replyTo = msgIds[len(msgIds)-1]
 			}
 		}
 
@@ -39,12 +52,12 @@ func handleItems(items []*gofeed.Item) error {
 			ReplyTo:   replyTo,
 		}
 
-		id, err = pub.Tweet(msg)
+		msgId, err := pub.Tweet(msg)
 		if err != nil {
 			return err
 		}
 
-		err = db.SetMsg(id, item.GUID)
+		err = db.SetMsg(msgId, []int{itemId})
 		if err != nil {
 			return err
 		}

@@ -12,9 +12,15 @@ func getDB() (*sql.DB, error) {
 }
 
 const schema = `
-CREATE TABLE IF NOT EXISTS msg (
-  id INTEGER(8) PRIMARY KEY,
-  guid TEXT UNIQUE NOT NULL
+CREATE TABLE IF NOT EXISTS items (
+  id INTEGER(4) PRIMARY KEY
+);
+CREATE TABLE IF NOT EXISTS msgs (
+  id INTEGER(8) PRIMARY KEY
+);
+CREATE TABLE IF NOT EXISTS item2msg (
+  item_id INTEGER(4) REFERENCES items (id),
+  msg_id INTEGER(8) REFERENCES msgs (id)
 );
 `
 
