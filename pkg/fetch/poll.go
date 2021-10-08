@@ -30,12 +30,9 @@ func pollRound() error {
 		return err
 	}
 
-	for i := len(items) - 1; i >= 0; i-- {
-		item := items[i]
-		err := handleItem(item)
-		if err != nil {
-			return err
-		}
+	err = handleItems(items)
+	if err != nil {
+		return err
 	}
 
 	return nil
