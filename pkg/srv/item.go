@@ -78,12 +78,8 @@ func filterText(body string) (string, []string, string, error) {
 	forwardLink := ""
 	var blocks []string
 	d.Find("body > p").Each(func(_ int, s *goquery.Selection) {
-		t, err := s.Html()
-		if err != nil {
-			return
-		}
-
-		t = strings.Replace(t, "<br/>", "\n", -1)
+		t := s.Text()
+		t = strings.Replace(t, "<br>", "\n", -1)
 		ts := strings.Split(t, "\n")
 		for i := range ts {
 			ts[i] = strings.TrimSpace(ts[i])
