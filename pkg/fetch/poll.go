@@ -89,7 +89,13 @@ func handleItem(item *gofeed.Item) error {
 		}
 	}
 
-	id, err = pub.Tweet(body, imageUrls, replyTo)
+	msg := pub.TweetMsg{
+		Body:      body,
+		ImageUrls: imageUrls,
+		ReplyTo:   replyTo,
+	}
+
+	id, err = pub.Tweet(msg)
 	if err != nil {
 		return err
 	}

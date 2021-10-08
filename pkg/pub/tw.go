@@ -14,19 +14,14 @@ import (
 	"os"
 )
 
-func getTwHttpClient() *http.Client {
-	config := oauth1.NewConfig(conf.TwConsumerKey, conf.TwConsumerSecret)
-	token := oauth1.NewToken(conf.TwTokenKey, conf.TwTokenSecret)
-	return config.Client(oauth1.NoContext, token)
+type TweetMsg struct {
+	Body      string
+	ImageUrls []string
+	ReplyTo   int64
 }
 
-func getTw() *twitter.Client {
-	httpClient := getTwHttpClient()
-	return twitter.NewClient(httpClient)
-}
-
-func Tweet(body string, imageUrls []string, replyTo int64) (int64, error) {
-	images, tmpDir, err := tmpDl(imageUrls)
+func Tweet(msg TweetMsg) (int64, error) {
+	images, tmpDir, err := tmpDl(msg.ImageUrls)
 	if err != nil {
 		return 0, err
 	}
@@ -46,12 +41,23 @@ func Tweet(body string, imageUrls []string, replyTo int64) (int64, error) {
 		mediaIds = append(mediaIds, id)
 	}
 
-	t, err := tweetText(body, mediaIds, replyTo)
+	t, err := tweetText(msg.Body, mediaIds, msg.ReplyTo)
 	if err != nil {
 		return 0, err
 	}
 
 	return t.ID, nil
+}
+
+func getTwHttpClient() *http.Client {
+	config := oauth1.NewConfig(conf.TwConsumerKey, conf.TwConsumerSecret)
+	token := oauth1.NewToken(conf.TwTokenKey, conf.TwTokenSecret)
+	return config.Client(oauth1.NoContext, token)
+}
+
+func getTw() *twitter.Client {
+	httpClient := getTwHttpClient()
+	return twitter.NewClient(httpClient)
 }
 
 func tweetText(body string, mediaIds []int64, replyTo int64) (*twitter.Tweet, error) {
