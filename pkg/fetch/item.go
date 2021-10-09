@@ -4,7 +4,6 @@ import (
 	"github.com/mmcdole/gofeed"
 	"github.com/myl7/tgchan2tw/pkg/db"
 	"github.com/myl7/tgchan2tw/pkg/pub"
-	"log"
 )
 
 func handleItems(items []*gofeed.Item) error {
