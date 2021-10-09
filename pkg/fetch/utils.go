@@ -5,7 +5,7 @@ import (
 	"strconv"
 )
 
-func guid2Id(guid string) (int, error) {
+func Guid2Id(guid string) (int, error) {
 	r := regexp.MustCompile(`/\d+$`)
 	s := r.Find([]byte(guid))
 	i, err := strconv.Atoi(string(s)[1:])

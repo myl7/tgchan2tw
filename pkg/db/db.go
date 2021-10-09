@@ -7,7 +7,7 @@ import (
 	"log"
 )
 
-func getDB() (*sql.DB, error) {
+func GetDB() (*sql.DB, error) {
 	return sql.Open("sqlite3", conf.DBPath)
 }
 
@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS item2msg (
 `
 
 func init() {
-	db, err := getDB()
+	db, err := GetDB()
 	if err != nil {
 		log.Fatalln(err)
 	}

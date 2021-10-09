@@ -3,7 +3,7 @@ package db
 import "database/sql"
 
 func CheckItem(id int) ([]int64, error) {
-	db, err := getDB()
+	db, err := GetDB()
 	if err != nil {
 		return nil, err
 	}
@@ -57,7 +57,7 @@ func CheckItem(id int) ([]int64, error) {
 }
 
 func SetMsg(msgId int64, itemIds []int) error {
-	db, err := getDB()
+	db, err := GetDB()
 	if err != nil {
 		return err
 	}

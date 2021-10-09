@@ -4,13 +4,14 @@ import (
 	"github.com/mmcdole/gofeed"
 	"github.com/myl7/tgchan2tw/pkg/db"
 	"github.com/myl7/tgchan2tw/pkg/pub"
+	"log"
 )
 
 func handleItems(items []*gofeed.Item) error {
 	for i := len(items) - 1; i >= 0; i-- {
 		item := items[i]
 
-		itemId, err := guid2Id(item.GUID)
+		itemId, err := Guid2Id(item.GUID)
 		if err != nil {
 			return err
 		}
@@ -31,7 +32,7 @@ func handleItems(items []*gofeed.Item) error {
 
 		replyTo := int64(0)
 		if replyGuid != "" {
-			replyId, err := guid2Id(replyGuid)
+			replyId, err := Guid2Id(replyGuid)
 			if err != nil {
 				return err
 			}
