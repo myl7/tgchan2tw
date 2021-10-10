@@ -9,6 +9,7 @@ require (
 	github.com/joho/godotenv v1.3.0
 	github.com/mattn/go-sqlite3 v1.14.8
 	github.com/mmcdole/gofeed v1.1.3
+	github.com/myl7/twitter-text-parse-go v0.0.0-20211010171129-4ef36e65e0b6
 	golang.org/x/net v0.0.0-20210614182718-04defd469f4e
 )
 
@@ -21,7 +22,8 @@ require (
 	github.com/mmcdole/goxpp v0.0.0-20181012175147-0068e33feabf // indirect
 	github.com/modern-go/concurrent v0.0.0-20180228061459-e0a39a4cb421 // indirect
 	github.com/modern-go/reflect2 v0.0.0-20180701023420-4b7aa43c6742 // indirect
-	github.com/myl7/twitter-text-parse-go v0.0.0-20211009032117-af21c6ea1c91 // indirect
 	github.com/stretchr/testify v1.4.0 // indirect
 	golang.org/x/text v0.3.6 // indirect
 )
+
+replace github.com/myl7/twitter-text-parse-go => ../twitter-text-parse-go
