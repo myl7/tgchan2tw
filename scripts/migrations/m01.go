@@ -12,7 +12,7 @@ func main() {
 		log.Fatalln(err)
 	}
 
-	s := "SELECT (id, guid) FROM msg"
+	s := "SELECT id, guid FROM msg"
 	q, err := d.Query(s)
 	if err != nil {
 		log.Fatalln(err)
