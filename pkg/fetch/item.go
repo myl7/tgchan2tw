@@ -52,12 +52,12 @@ func handleItems(items []*gofeed.Item) error {
 			ReplyTo:   replyTo,
 		}
 
-		msgId, err := pub.Tweet(msg)
+		createdMsgIds, err := pub.Tweet(msg)
 		if err != nil {
 			return err
 		}
 
-		err = db.SetMsg(msgId, []int{itemId})
+		err = db.SetMsgs(createdMsgIds, []int{itemId})
 		if err != nil {
 			return err
 		}

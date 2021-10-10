@@ -56,7 +56,7 @@ func CheckItem(id int) ([]int64, error) {
 	return ids, nil
 }
 
-func SetMsg(msgId int64, itemIds []int) error {
+func SetMsgs(msgIds []int64, itemIds []int) error {
 	db, err := GetDB()
 	if err != nil {
 		return err
@@ -75,17 +75,19 @@ func SetMsg(msgId int64, itemIds []int) error {
 		_ = tx.Commit()
 	}(tx)
 
-	s := "INSERT INTO msgs VALUES ($1)"
-	_, err = tx.Exec(s, msgId)
-	if err != nil {
-		return err
-	}
-
-	s = "INSERT INTO item2msg VALUES ($1, $2)"
-	for i := range itemIds {
-		_, err = tx.Exec(s, itemIds[i], msgId)
+	for i := range msgIds {
+		s := "INSERT INTO msgs VALUES ($1)"
+		_, err = tx.Exec(s, msgIds[i])
 		if err != nil {
 			return err
+		}
+
+		s = "INSERT INTO item2msg VALUES ($1, $2)"
+		for i := range itemIds {
+			_, err = tx.Exec(s, itemIds[i], msgIds[i])
+			if err != nil {
+				return err
+			}
 		}
 	}
 
