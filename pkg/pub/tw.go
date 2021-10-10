@@ -20,10 +20,10 @@ type TweetMsg struct {
 	ReplyTo   int64
 }
 
-func Tweet(msg TweetMsg) (int64, error) {
+func Tweet(msg TweetMsg) ([]int64, error) {
 	images, tmpDir, err := tmpDl(msg.ImageUrls)
 	if err != nil {
-		return 0, err
+		return nil, err
 	}
 
 	defer func(path string) {
@@ -35,18 +35,23 @@ func Tweet(msg TweetMsg) (int64, error) {
 		image := images[i]
 		id, err := tweetImage(image)
 		if err != nil {
-			return 0, err
+			return nil, err
 		}
 
 		mediaIds = append(mediaIds, id)
 	}
 
-	t, err := tweetText(msg.Body, mediaIds, msg.ReplyTo)
+	ts, err := tweetText(msg.Body, mediaIds, msg.ReplyTo)
 	if err != nil {
-		return 0, err
+		return nil, err
 	}
 
-	return t.ID, nil
+	var tids []int64
+	for i := range ts {
+		tids = append(tids, ts[i].ID)
+	}
+
+	return tids, nil
 }
 
 func getTwHttpClient() *http.Client {
@@ -60,17 +65,34 @@ func getTw() *twitter.Client {
 	return twitter.NewClient(httpClient)
 }
 
-func tweetText(body string, mediaIds []int64, replyTo int64) (*twitter.Tweet, error) {
+func tweetText(body string, mediaIds []int64, replyTo int64) ([]*twitter.Tweet, error) {
 	tw := getTw()
-	t, _, err := tw.Statuses.Update(body, &twitter.StatusUpdateParams{
-		InReplyToStatusID: replyTo,
-		MediaIds:          mediaIds,
-	})
+
+	bodies, err := splitTweetBody(body)
 	if err != nil {
 		return nil, err
 	}
 
-	return t, nil
+	var ts []*twitter.Tweet
+	var t *twitter.Tweet
+	for i := range bodies {
+		params := &twitter.StatusUpdateParams{
+			InReplyToStatusID: replyTo,
+			MediaIds:          mediaIds,
+		}
+		if t != nil {
+			params.InReplyToStatusID = t.ID
+		}
+
+		t, _, err = tw.Statuses.Update(bodies[i], params)
+		if err != nil {
+			return nil, err
+		}
+
+		ts = append(ts, t)
+	}
+
+	return ts, nil
 }
 
 func tweetImage(image io.ReadCloser) (int64, error) {
