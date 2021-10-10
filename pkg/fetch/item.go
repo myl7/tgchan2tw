@@ -7,6 +7,9 @@ import (
 )
 
 func handleItems(items []*gofeed.Item) error {
+	var msgs []pub.TweetMsg
+	var itemList [][]*gofeed.Item
+	var isForwardList []bool
 	for i := len(items) - 1; i >= 0; i-- {
 		item := items[i]
 
@@ -24,14 +27,14 @@ func handleItems(items []*gofeed.Item) error {
 			continue
 		}
 
-		body, imageUrls, replyGuid, err := filterText(item.Description)
+		body, err := filterText(item.Description)
 		if err != nil {
 			return err
 		}
 
 		replyTo := int64(0)
-		if replyGuid != "" {
-			replyId, err := Guid2Id(replyGuid)
+		if body.ReplyUrl != "" {
+			replyId, err := Guid2Id(body.ReplyUrl)
 			if err != nil {
 				return err
 			}
@@ -47,17 +50,49 @@ func handleItems(items []*gofeed.Item) error {
 		}
 
 		msg := pub.TweetMsg{
-			Body:      body,
-			ImageUrls: imageUrls,
+			Body:      body.Text,
+			ImageUrls: body.ImageUrls,
 			ReplyTo:   replyTo,
 		}
+		msgs = append(msgs, msg)
+		itemList = append(itemList, []*gofeed.Item{item})
+		isForwardList = append(isForwardList, body.IsForward)
+	}
 
-		createdMsgIds, err := pub.Tweet(msg)
+	// Merge two messages when forwarding with comment in Telegram
+	var mergeList []int
+	for i := 0; i < len(msgs); i++ {
+		// If two messages are sent simultaneously and the latter one is forwarded message
+		if i < len(msgs)-1 && itemList[i][0].Published == itemList[i+1][0].Published && isForwardList[i+1] {
+			mergeList = append(mergeList, i)
+			i++
+		}
+	}
+	for j := len(mergeList) - 1; j >= 0; j-- {
+		i := mergeList[j]
+		msgs[i].Body = msgs[i].Body + "\n" + msgs[i+1].Body
+		msgs = append(msgs[:i+1], msgs[i+2:]...)
+		itemList[i] = append(itemList[i], itemList[i+1]...)
+		itemList = append(itemList[:i+1], itemList[i+2:]...)
+	}
+
+	for i := range msgs {
+		createdMsgIds, err := pub.Tweet(msgs[i])
 		if err != nil {
 			return err
 		}
 
-		err = db.SetMsgs(createdMsgIds, []int{itemId})
+		var itemIds []int
+		for j := range itemList[i] {
+			itemId, err := Guid2Id(itemList[i][j].GUID)
+			if err != nil {
+				return err
+			}
+
+			itemIds = append(itemIds, itemId)
+		}
+
+		err = db.SetMsgs(createdMsgIds, itemIds)
 		if err != nil {
 			return err
 		}

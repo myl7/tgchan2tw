@@ -7,11 +7,18 @@ import (
 	"strings"
 )
 
-func filterText(body string) (string, []string, string, error) {
+type ItemBody struct {
+	Text      string
+	ImageUrls []string
+	ReplyUrl  string
+	IsForward bool
+}
+
+func filterText(body string) (ItemBody, error) {
 	b := bytes.NewBufferString("<body>" + body + "</body>")
 	h, err := html.Parse(b)
 	if err != nil {
-		return "", nil, "", err
+		return ItemBody{}, err
 	}
 
 	var imageUrls []string
@@ -67,12 +74,12 @@ func filterText(body string) (string, []string, string, error) {
 		blocks = append(blocks, t)
 	})
 
-	replyGuid := ""
+	replyUrl := ""
 	r := d.Find("body :first-child")
 	if goquery.NodeName(r) == "blockquote" {
 		href, ok := r.Find("a").Attr("href")
 		if ok {
-			replyGuid = href
+			replyUrl = href
 		}
 	}
 
@@ -83,5 +90,10 @@ func filterText(body string) (string, []string, string, error) {
 		res = strings.Join(blocks, "\n")
 	}
 
-	return res, imageUrls, replyGuid, nil
+	return ItemBody{
+		Text:      res,
+		ImageUrls: imageUrls,
+		ReplyUrl:  replyUrl,
+		IsForward: isForward,
+	}, nil
 }
