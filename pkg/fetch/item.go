@@ -4,6 +4,7 @@ import (
 	"github.com/mmcdole/gofeed"
 	"github.com/myl7/tgchan2tw/pkg/db"
 	"github.com/myl7/tgchan2tw/pkg/pub"
+	"log"
 )
 
 func handleItems(items []*gofeed.Item) error {
@@ -96,6 +97,8 @@ func handleItems(items []*gofeed.Item) error {
 		if err != nil {
 			return err
 		}
+
+		log.Println("Tweeted msg", msgs[i], "id(s)", createdMsgIds, "for item(s)", itemIds)
 	}
 
 	return nil
