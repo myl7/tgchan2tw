@@ -2,7 +2,7 @@ FROM golang:alpine
 WORKDIR /app
 COPY . /app
 RUN apk add gcc musl-dev wget tar gzip
-RUN bash scripts/setup-dep.sh musl
+RUN ash scripts/setup-dep.sh musl
 RUN go build -o tgchan2tw cmd/tgchan2tw/main.go
 
 FROM alpine:latest
