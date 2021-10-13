@@ -45,7 +45,7 @@ docker run -d --restart=always --name tgchan2tw \
   -e TW_CONSUMER_SECRET=... \
   -e TW_TOKEN_KEY=... \
   -e TW_TOKEN_SECRET=... \
-  myl7/tgchan2tw
+  myl7/tgchan2tw:1
 ```
 
 All data, stored in a SQLite database, are in `/db/db.sqlite` by default.
