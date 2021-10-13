@@ -28,7 +28,7 @@ func handleItems(items []*gofeed.Item) error {
 			continue
 		}
 
-		body, err := filterText(item.Description)
+		body, err := FilterText(item.Description)
 		if err != nil {
 			return err
 		}

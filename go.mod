@@ -11,6 +11,7 @@ require (
 	github.com/mmcdole/gofeed v1.1.3
 	github.com/myl7/twitter-text-parse-go v0.0.0-20211010171129-4ef36e65e0b6
 	golang.org/x/net v0.0.0-20210614182718-04defd469f4e
+	gopkg.in/yaml.v2 v2.2.2
 )
 
 require (

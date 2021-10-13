@@ -1,0 +1,44 @@
+items:
+  - title: plain text
+    body: <p>昨天惊觉 mailgun 因为 student 已过，receiving 功能已经没法用了，赶紧搭了个 postfix+dovecot 来收邮件，现在 myl@myl.moe 应该能 work 了<br>顺带再领略了一遍 postfix 的干涩文档，dovecot 的倒是还够舒服了<br>另外 docker 下的 complete solution 还挺多的，就是带了一堆垃圾过滤和其他功能后 hardware requirement free memory 1G 起步，着实受不住，外加自己搭的发邮件时挺容易进垃圾箱的，和 mailgun aws 之类的特地做邮件服务的应该没法比，在发还是有免费额度的情况下还是靠他们对抗垃圾箱吧</p>
+    info:
+      text: |-
+        昨天惊觉 mailgun 因为 student 已过，receiving 功能已经没法用了，赶紧搭了个 postfix+dovecot 来收邮件，现在 myl@myl.moe 应该能 work 了
+        顺带再领略了一遍 postfix 的干涩文档，dovecot 的倒是还够舒服了
+        另外 docker 下的 complete solution 还挺多的，就是带了一堆垃圾过滤和其他功能后 hardware requirement free memory 1G 起步，着实受不住，外加自己搭的发邮件时挺容易进垃圾箱的，和 mailgun aws 之类的特地做邮件服务的应该没法比，在发还是有免费额度的情况下还是靠他们对抗垃圾箱吧
+      image_urls: []
+      reply_url:
+      is_forward: false
+  - title: with link
+    body: <p><a href="http://b23.wtf/yaXEor" target="_blank" rel="noopener">http://b23.wtf/yaXEor</a><br><a href="http://b23.wtf/TmOyjm" target="_blank" rel="noopener">http://b23.wtf/TmOyjm</a><br>甲 级 战 犯，连吃两条已经噎得不行了（创意倒挺好的</p><blockquote><b>Bilibili</b><br><b><a href="http://b23.wtf/yaXEor"> 转发这条视频给你喜欢Neo Aspect的朋友_哔哩哔哩_bilibili</a></b><br><p>https://www.youtube.com/watch?v=0vJIE1KNKek</p><img src="https://cdn4.telesco.pe/file/O7sipEsBw0Z5iTmCUlE2yAVFXiQ8kwq7juU8t6vtn6_nygv7KTA5ZArZwP5ZP3HW5qv61zPUAa8aOW6YeKm7WIes1WcR2RudnIVfBJExY1JOcFV8fdDR9IxNW3bYJAd2u37VWVwfYINxGcR56MdlZ3FI8nKfPJa7efS20idVsJpyNFKJ80iBLL6Sy4ZhZ28Mn62aIU3QK3lf6ARg_5FghJWCVNwGKkPJbjEs8JU0caiWIjQO1XT3iE-1LRBqIXWATck0kWJSzcuCCNjWZefBClfjrGsSHyfCc1EYV_qQJWnSaghwxTRXAsw6dNp9esw2rrcHs4e8VBMxe0qXyM3WxA.jpg" referrerpolicy="no-referrer"></blockquote>
+    info:
+      text: |-
+        http://b23.wtf/yaXEor
+        http://b23.wtf/TmOyjm
+        甲 级 战 犯，连吃两条已经噎得不行了（创意倒挺好的
+      image_urls: []
+      reply_url:
+      is_forward: false
+  - title: reply
+    body: <blockquote> <p><a href="https://t.me/myl7s/515"><strong>myl7's nonsence</strong>:</a></p> <p>好奇怪，为什么出的 udp 没拦，却拦了入的 udp，等保？不过套了 gost 也还行倒是</p> </blockquote><p>好吧，还得 PersistentKeepalive，两边都是公网 IP 啊？</p>
+    info:
+      text: 好吧，还得 PersistentKeepalive，两边都是公网 IP 啊？
+      image_urls: []
+      reply_url: https://t.me/myl7s/515
+      is_forward: false
+  - title: with image
+    body: <p>啊这……还是不修了吧，应该不怎么影响美观</p><img src="https://cdn5.telesco.pe/file/V9rUS7_DmJhcUjCHPuGhsQb1ie540INkm6DaFpNQ9ffms7YTkqiz2lrPF_e8mggUhCfWndcEU5PJ6SCRMMaLAbOfDyQTO0aXAsibEfeK7zpBE3N3gg3l7WCWnebSA47oSEyxhs1y8HV9utbuHOsULxJJHWb1K0YtOVck158qCbv8FA0GohFbBADgalPJpboCuEQrUH7Jb8GlRpEWVxkf6zxzfD7QJhuIGdhYov2jZinwNmW4jnjf0U1gSYnX7xUPdQKfR95mtMxnMM2UGkteJDIegtJHUalhKH-R3QyujKAGSniQ_aM8rW5lkySzxiJGM8b-EIZxlcvZexfePwSz0Q.jpg" referrerpolicy="no-referrer">
+    info:
+      text: 啊这……还是不修了吧，应该不怎么影响美观
+      image_urls:
+        - https://cdn5.telesco.pe/file/V9rUS7_DmJhcUjCHPuGhsQb1ie540INkm6DaFpNQ9ffms7YTkqiz2lrPF_e8mggUhCfWndcEU5PJ6SCRMMaLAbOfDyQTO0aXAsibEfeK7zpBE3N3gg3l7WCWnebSA47oSEyxhs1y8HV9utbuHOsULxJJHWb1K0YtOVck158qCbv8FA0GohFbBADgalPJpboCuEQrUH7Jb8GlRpEWVxkf6zxzfD7QJhuIGdhYov2jZinwNmW4jnjf0U1gSYnX7xUPdQKfR95mtMxnMM2UGkteJDIegtJHUalhKH-R3QyujKAGSniQ_aM8rW5lkySzxiJGM8b-EIZxlcvZexfePwSz0Q.jpg
+      reply_url:
+      is_forward: false
+  - title: forward
+    body: |-
+      <p>Forwarded From <b><a href="https://t.me/outvivid/3067"> 层叠 - The Cascading</a></b></p><p>Apache 近期被发现存在路径遍历漏洞，可能导致敏感文件被读取甚至远程代码执行。此漏洞对 Windows 和 Linux 服务器均有影响。从 PoC [1] 我们可以看到，Apache 未能将 <code>%2e</code> 正确地判别为 <code>.</code>，从而未能检测到构造出来的 <code>../</code> 目录（即上级目录）。<br><br>漏洞存在于 2.4.49 和 2.4.50 版本，并在 2.4.51 被修复。<br><br>Cloudflare 用户可使用 [src2] 中描述的规则在 WAF 中阻止类似请求。<br><br><a href="https://repology.org/project/apache/versions" target="_blank" rel="noopener" onclick="return confirm('Open this link?\n\n'+this.href);">查看各个发行版 apache 系列包的更新状态</a>。<br><br>CVE: CVE-2021-41773 / CVE-2021-42013<br><br>src1: <a href="https://httpd.apache.org/security/vulnerabilities_24.html" target="_blank" rel="noopener">https://httpd.apache.org/security/vulnerabilities_24.html</a><br>src2: <a href="https://blog.cloudflare.com/helping-apache-servers-stay-safe-from-zero-day-path-traversal-attacks/" target="_blank" rel="noopener">https://blog.cloudflare.com/helping-apache-servers-stay-safe-from-zero-day-path-traversal-attacks/</a><br><br>1. <a href="https://packetstormsecurity.com/files/164418/Apache-HTTP-Server-2.4.49-Path-Traversal.html" target="_blank" rel="noopener">https://packetstormsecurity.com/files/164418/Apache-HTTP-Server-2.4.49-Path-Traversal.html</a></p><blockquote><b>httpd.apache.org</b><br><b><a href="https://httpd.apache.org/security/vulnerabilities_24.html"> Apache HTTP Server 2.4 vulnerabilities - The Apache HTTP Server Project</a></b><br></blockquote>
+    info:
+      text: https://t.me/outvivid/3067
+      image_urls: []
+      reply_url:
+      is_forward: true

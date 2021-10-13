@@ -14,7 +14,7 @@ type ItemBody struct {
 	IsForward bool
 }
 
-func filterText(body string) (ItemBody, error) {
+func FilterText(body string) (ItemBody, error) {
 	b := bytes.NewBufferString("<body>" + body + "</body>")
 	h, err := html.Parse(b)
 	if err != nil {
