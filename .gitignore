@@ -18,3 +18,4 @@
 .idea/
 .env
 *.sqlite
+/third_party/twitter-text-parse-go
