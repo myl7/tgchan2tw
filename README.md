@@ -14,6 +14,8 @@ corresponding status will also reply to corresponding status if exists on Twitte
 Support forward message: Other than stubbornly copy the message body,
 use the original link as body to send to Twitter.
 
+Support blockquote text: Feel free to use Ctrl+Shift+M to create fix-width/quoted text in your message
+
 Merge forward message and your comment: If you forward a message with your some words,
 Telegram will, surprisingly, create two messages, of which one contains the forward message,
 and the other contains your words.
