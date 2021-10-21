@@ -42,3 +42,44 @@ items:
       image_urls: []
       reply_url:
       is_forward: true
+  - title: blockquote
+    body: |-
+      <blockquote> <p><a href="https://t.me/myl7s/559"><strong>myl7's nonsence</strong>:</a></p> <p>想了一个 human-readable byte size 的 grammar（via antlr4），不过由于要 no_std 所以没法直接用 antlr4 的库，等以后有机会自己糊个 LL 用吧</p> </blockquote><p></p><pre>grammar bsize;<br><br>size: Number Space* unit;<br>unit: word | abbr;<br>word: prefix suffix;<br>abbr: pre | suf;<br>prefix: KiloWord | MegaWord | GigaWord | TeraWord | PetaWord | ExaWord;<br>suffix: B (bitBody | byteBody) S?;<br>pre: Kilo | Mega | Giga | Tera | Peta | Exa;<br>suf: B | Byte;<br>byteBody: 'yte';<br>bitBody: 'it';<br><br>Number: Digit+;<br>Space: ' ';<br>KiloWord: Kilo 'ilo';<br>MegaWord: Mega 'ega';<br>GigaWord: Giga 'iga';<br>TeraWord: Tera 'era';<br>PetaWord: Peta 'eta';<br>ExaWord: Exa 'xa';<br>BiSign: 'i';<br>Kilo: 'k' | 'K';<br>Mega: 'm' | 'M';<br>Giga: 'g' | 'G';<br>Tera: 't' | 'T';<br>Peta: 'p' | 'P';<br>Exa: 'e' | 'E';<br>B: 'b';<br>Byte: 'B';<br>S: 's';<br><br>fragment Digit: [0-9];</pre><p></p>
+    info:
+      text: |-
+        grammar bsize;
+
+        size: Number Space* unit;
+        unit: word | abbr;
+        word: prefix suffix;
+        abbr: pre | suf;
+        prefix: KiloWord | MegaWord | GigaWord | TeraWord | PetaWord | ExaWord;
+        suffix: B (bitBody | byteBody) S?;
+        pre: Kilo | Mega | Giga | Tera | Peta | Exa;
+        suf: B | Byte;
+        byteBody: 'yte';
+        bitBody: 'it';
+
+        Number: Digit+;
+        Space: ' ';
+        KiloWord: Kilo 'ilo';
+        MegaWord: Mega 'ega';
+        GigaWord: Giga 'iga';
+        TeraWord: Tera 'era';
+        PetaWord: Peta 'eta';
+        ExaWord: Exa 'xa';
+        BiSign: 'i';
+        Kilo: 'k' | 'K';
+        Mega: 'm' | 'M';
+        Giga: 'g' | 'G';
+        Tera: 't' | 'T';
+        Peta: 'p' | 'P';
+        Exa: 'e' | 'E';
+        B: 'b';
+        Byte: 'B';
+        S: 's';
+
+        fragment Digit: [0-9];
+      image_urls: []
+      reply_url: https://t.me/myl7s/559
+      is_forward: false
