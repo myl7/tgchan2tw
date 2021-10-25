@@ -83,8 +83,8 @@ func SetMsgs(msgIds []int64, itemIds []int) error {
 		}
 
 		s = "INSERT INTO item2msg VALUES ($1, $2)"
-		for i := range itemIds {
-			_, err = tx.Exec(s, itemIds[i], msgIds[i])
+		for j := range itemIds {
+			_, err = tx.Exec(s, itemIds[j], msgIds[i])
 			if err != nil {
 				return err
 			}
