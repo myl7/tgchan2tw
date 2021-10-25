@@ -1,0 +1,11 @@
+version: 2
+cli:
+  server: https://app.fossa.com
+  fetcher: custom
+  project: git@github.com:myl7/tgchan2tw.git
+analyze:
+  modules:
+  - name: github.com/myl7/tgchan2tw/cmd/tgchan2tw
+    type: go
+    target: github.com/myl7/tgchan2tw/cmd/tgchan2tw
+    path: cmd/tgchan2tw
