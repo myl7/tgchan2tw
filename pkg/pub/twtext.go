@@ -6,6 +6,10 @@ import (
 )
 
 func splitTweetBody(body string) ([]string, error) {
+	if body == "" {
+		return []string{body}, nil
+	}
+
 	var bodies []string
 	remain := body
 	for {
