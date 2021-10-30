@@ -7,7 +7,6 @@ import (
 	"net/url"
 	"path"
 	"strconv"
-	"strings"
 	"time"
 )
 
@@ -48,7 +47,7 @@ func reqRsshub() ([]*gofeed.Item, error) {
 
 	q := u.Query()
 	q.Set("filter_time", strconv.Itoa(conf.PollInterval))
-	q.Set("filterout", strings.Replace(conf.PostFilterOut, "#", "%23", -1))
+	q.Set("filterout", conf.PostFilterOut)
 	u.RawQuery = q.Encode()
 
 	fp := gofeed.NewParser()
