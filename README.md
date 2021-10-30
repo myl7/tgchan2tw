@@ -60,6 +60,16 @@ You can get "Consumer Keys" and "Authentication Tokens" like:
 Here I "Created with Read, Write, and Direct Messages permissions".
 Selecting only "Read and Write" should be fine too.
 
+## Onetime migration
+
+If you are use the app for the first time, or due to unexpected bug the app stopped, and now you need to restart the app to migrate all leftover Telegram messages again to Twitter --- In these situations you should run a onetime migration.
+
+Onetime migration is to set a so large `PollRange` (like 10000000000) and run the app to let it poll onetime.
+Then the app will try to forward all not forwarded messages again.
+
+Due to limit of RSSHub, there is an upper limit of `PollRange`, so you can not use onetime migration to forward the whole of your five-year-old Telegram channel completely to Twitter.
+But if the app just missed messages of a few days, this can fix it.
+
 ## License
 
 MIT
