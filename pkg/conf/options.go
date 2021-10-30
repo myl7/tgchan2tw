@@ -51,3 +51,8 @@ var TwTextSplitBackLen = envInt("TW_TEXT_SPLIT_BACK_LEN", intPtr(20))
 // When all of TwTextSplitBackDisable* is set, the text splitting will fall back to just choose the end point,
 // which means no attempt to split at a maybe better position will be taken.
 var TwTextSplitBackDisableLen = env("TW_TEXT_SPLIT_BACK_DISABLE_RATE", strPtr(""))
+
+// TmpDir Temporary dir path.
+// Make sure it exists and is accessible by the app.
+// Multiply directories may be created as tmp dir for different purposes in it.
+var TmpDir = env("TMP_DIR", strPtr("/tmp"))

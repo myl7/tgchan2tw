@@ -2,13 +2,14 @@ package pub
 
 import (
 	"bufio"
+	"github.com/myl7/tgchan2tw/pkg/conf"
 	"io"
 	"io/ioutil"
 	"net/http"
 )
 
 func tmpDl(urls []string) ([]io.ReadCloser, string, error) {
-	dir, err := ioutil.TempDir("/tmp", "tgchan2tw")
+	dir, err := ioutil.TempDir(conf.TmpDir, "dl")
 	if err != nil {
 		return nil, "", err
 	}
