@@ -78,5 +78,3 @@ Selecting only "Read and Write" should be fine too.
 ## License
 
 MIT
-
-[![FOSSA Status](https://app.fossa.com/api/projects/custom%2B20863%2Fgit%40github.com%3Amyl7%2Ftgchan2tw.git.svg?type=large)](https://app.fossa.com/projects/custom%2B20863%2Fgit%40github.com%3Amyl7%2Ftgchan2tw.git?ref=badge_large)
