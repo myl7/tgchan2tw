@@ -15,6 +15,8 @@ jobs:
         uses: docker/metadata-action@v3
         with:
           images: myl7/tgchan2tw
+          flavor: |
+            latest=true
           tags: |
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
