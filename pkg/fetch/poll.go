@@ -46,7 +46,7 @@ func reqRsshub() ([]*gofeed.Item, error) {
 	u.Path = path.Join("/telegram/channel", conf.TgChanName)
 
 	q := u.Query()
-	q.Set("filter_time", strconv.Itoa(conf.PollInterval))
+	q.Set("filter_time", strconv.Itoa(conf.PollRange))
 	q.Set("filterout", conf.PostFilterOut)
 	u.RawQuery = q.Encode()
 

@@ -22,6 +22,11 @@ var PostFilterOut = env("POST_FILTER_OUT", strPtr("#notwfwd"))
 // Unit: s.
 var PollInterval = envInt("POLL_INTERVAL", intPtr(360))
 
+// PollRange The time range of each polling request to RSSHub.
+// The option is directly used as `filter_time` param for RSSHub.
+// Unit: s.
+var PollRange = envInt("POLL_RANGE", intPtr(360))
+
 // DBPath SQLite database file path
 var DBPath = env("DB_PATH", strPtr("/db/db.sqlite"))
 
