@@ -35,3 +35,19 @@ var TwConsumerKey = env("TW_CONSUMER_KEY", nil)
 var TwConsumerSecret = env("TW_CONSUMER_SECRET", nil)
 var TwTokenKey = env("TW_TOKEN_KEY", nil)
 var TwTokenSecret = env("TW_TOKEN_SECRET", nil)
+
+// TwTextSplitBackRate When searching at the end of body text for a possible split position, the range proportion.
+// The result of dividing the int with 100 should be in 0-1.
+var TwTextSplitBackRate = envInt("TW_TEXT_SPLIT_BACK_RATE", intPtr(90))
+
+// TwTextSplitBackDisableRate When set, disable the searching of TwTextSplitBackRate
+var TwTextSplitBackDisableRate = env("TW_TEXT_SPLIT_BACK_DISABLE_RATE", strPtr(""))
+
+// TwTextSplitBackLen Like TwTextSplitBackRate, but in int length counted in UTF-16 encoding.
+// The default 20 chars should be large enough to cross an English word and reach a space separating point.
+var TwTextSplitBackLen = envInt("TW_TEXT_SPLIT_BACK_LEN", intPtr(20))
+
+// TwTextSplitBackDisableLen Like TwTextSplitBackDisableRate but for TwTextSplitBackLen.
+// When all of TwTextSplitBackDisable* is set, the text splitting will fall back to just choose the end point,
+// which means no attempt to split at a maybe better position will be taken.
+var TwTextSplitBackDisableLen = env("TW_TEXT_SPLIT_BACK_DISABLE_RATE", strPtr(""))
