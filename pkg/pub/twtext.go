@@ -24,15 +24,15 @@ func splitTweetBody(body string) ([]string, error) {
 			break
 		}
 
-		b, r := splitTweetBodyOnce(remain, res.ValidTextRange.End+1)
+		b, r := SplitTweetBodyOnce(remain, res.ValidTextRange.End+1)
 		bodies = append(bodies, b)
 		remain = r
 	}
 	return bodies, nil
 }
 
-// body is ensured to be not empty
-func splitTweetBodyOnce(body string, end int) (string, string) {
+// SplitTweetBodyOnce body is ensured to be not empty
+func SplitTweetBodyOnce(body string, end int) (string, string) {
 	s := utf16.Encode([]rune(body))
 	start := 0
 
@@ -71,10 +71,12 @@ func findInSplitRange(s []uint16, end int, start int) (int, bool) {
 }
 
 func genResAndRemain(s []uint16, sep int) (string, string) {
-	b := string(utf16.Decode(s[:sep]))
-	r := string(utf16.Decode(s[sep:]))
-	if sep > 0 && b[sep-1] == ' ' {
-		b = b[:sep-1]
+	b := ""
+	if sep > 0 && s[sep-1] == uint16(' ') {
+		b = string(utf16.Decode(s[:sep-1]))
+	} else {
+		b = string(utf16.Decode(s[:sep]))
 	}
+	r := string(utf16.Decode(s[sep:]))
 	return b, r
 }
