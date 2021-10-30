@@ -6,29 +6,14 @@ Used by myself for [@myl7s](https://t.me/myl7s) on Telegram -> [@myl107](https:/
 
 ## Features
 
-Support images: Embed them into Twitter status
-
-Support replies: When you reply on Telegram, 
-corresponding status will also reply to corresponding status if exists on Twitter
-
-Support forward message: Other than stubbornly copy the message body,
-use the original link as body to send to Twitter.
-
-Support blockquote text: Feel free to use Ctrl+Shift+M to create fix-width/quoted text in your message
-
-Merge forward message and your comment: If you forward a message with your some words,
-Telegram will, surprisingly, create two messages, of which one contains the forward message,
-and the other contains your words.
-The app will merge the two into only one status and send it to Twitter.
-
-Split status if reaching Twitter length limit: While Telegram generously allow you to send so long message,
-Twitter status length limit is kinda annoying.
-The app will handle this, automatically and properly split a Telegram message into several Twitter statuses
-to fit the Twitter requirement.
-What is more, the splitting will be done in a wise way, as the app will search spaces or punctuations
-(including Chinese full-width punctuations) to decide the splitting point.
-
-Exclude specific messages from forwarding by tags: Thanks to `filterout` param of RSSHub
+- **Support images**: Embed them into Twitter status
+- **Support replies**: When you reply on Telegram, corresponding status will also reply to corresponding status if exists on Twitter
+- **Support forward message**: Other than stubbornly copy the message body, use the original link as body to send to Twitter.
+- **Support blockquote text**: Feel free to use Ctrl+Shift+M to create fix-width/quoted text in your message
+- **Merge forward message and your comment**: If you forward a message with your some words, Telegram will, surprisingly, create two messages, of which one contains the forward message, and the other contains your words. The app will merge the two into only one status and send it to Twitter.
+- **Split status if reaching Twitter length limit**: While Telegram generously allow you to send so long message, Twitter status length limit is kinda annoying. The app will handle this, automatically and properly split a Telegram message into several Twitter statuses to fit the Twitter requirement.
+  - What is more, the splitting will be done in a wise way, as the app will search spaces or punctuations (including Chinese full-width punctuations) to decide the splitting point.
+- **Exclude specific messages from forwarding by tags**: Thanks to `filterout` param of RSSHub
 
 Feel free to raise new feature request using "Issue" panel!
 
