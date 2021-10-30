@@ -26,6 +26,8 @@ Twitter status length limit is kinda annoying.
 The app will handle this, automatically and properly split a Telegram message into several Twitter statuses
 to fit the Twitter requirement. 
 
+Exclude specific messages from forwarding by tags: Thanks to `filterout` param of RSSHub
+
 Feel free to raise new feature request using "Issue" panel!
 
 ## Deploy
