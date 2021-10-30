@@ -34,17 +34,13 @@ func splitTweetBody(body string) ([]string, error) {
 // body is ensured to be not empty
 func splitTweetBodyOnce(body string, end int) (string, string) {
 	s := utf16.Encode([]rune(body))
-	b := ""
-	r := ""
 	start := 0
 
 	if conf.TwTextSplitBackDisableRate == "" {
 		start = end * conf.TwTextSplitBackRate / 100
 		sep, ok := findInSplitRange(s, end, start)
 		if ok {
-			b = string(utf16.Decode(s[:sep]))
-			r = string(utf16.Decode(s[sep:]))
-			return b, r
+			return genResAndRemain(s, sep)
 		}
 	}
 
@@ -55,16 +51,11 @@ func splitTweetBodyOnce(body string, end int) (string, string) {
 		}
 		sep, ok := findInSplitRange(s, end, start)
 		if ok {
-			b = string(utf16.Decode(s[:sep]))
-			r = string(utf16.Decode(s[sep:]))
-			return b, r
+			return genResAndRemain(s, sep)
 		}
 	}
 
-	sep := end
-	b = string(utf16.Decode(s[:sep]))
-	r = string(utf16.Decode(s[sep:]))
-	return b, r
+	return genResAndRemain(s, end)
 }
 
 func findInSplitRange(s []uint16, end int, start int) (int, bool) {
@@ -77,4 +68,13 @@ func findInSplitRange(s []uint16, end int, start int) (int, bool) {
 		}
 	}
 	return 0, false
+}
+
+func genResAndRemain(s []uint16, sep int) (string, string) {
+	b := string(utf16.Decode(s[:sep]))
+	r := string(utf16.Decode(s[sep:]))
+	if sep > 0 && b[sep-1] == ' ' {
+		b = b[:sep-1]
+	}
+	return b, r
 }
