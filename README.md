@@ -60,6 +60,12 @@ You can get "Consumer Keys" and "Authentication Tokens" like:
 Here I "Created with Read, Write, and Direct Messages permissions".
 Selecting only "Read and Write" should be fine too.
 
+## Docker tags
+
+`edge` is used to reflect the build of the latest commit.
+`latest` points to the build of the latest release.
+Semver is used in docker tags, so feel free to use tags like `1`, `1.2`, or `1.2.0`
+
 ## Onetime migration
 
 If you are use the app for the first time, or due to unexpected bug the app stopped, and now you need to restart the app to migrate all leftover Telegram messages again to Twitter --- In these situations you should run a onetime migration.
