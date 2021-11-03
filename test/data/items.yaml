@@ -8,7 +8,7 @@ items:
         另外 docker 下的 complete solution 还挺多的，就是带了一堆垃圾过滤和其他功能后 hardware requirement free memory 1G 起步，着实受不住，外加自己搭的发邮件时挺容易进垃圾箱的，和 mailgun aws 之类的特地做邮件服务的应该没法比，在发还是有免费额度的情况下还是靠他们对抗垃圾箱吧
       image_urls: []
       reply_url:
-      is_forward: false
+      forward_url:
   - title: with link
     body: <p><a href="http://b23.wtf/yaXEor" target="_blank" rel="noopener">http://b23.wtf/yaXEor</a><br><a href="http://b23.wtf/TmOyjm" target="_blank" rel="noopener">http://b23.wtf/TmOyjm</a><br>甲 级 战 犯，连吃两条已经噎得不行了（创意倒挺好的</p><blockquote><b>Bilibili</b><br><b><a href="http://b23.wtf/yaXEor"> 转发这条视频给你喜欢Neo Aspect的朋友_哔哩哔哩_bilibili</a></b><br><p>https://www.youtube.com/watch?v=0vJIE1KNKek</p><img src="https://cdn4.telesco.pe/file/O7sipEsBw0Z5iTmCUlE2yAVFXiQ8kwq7juU8t6vtn6_nygv7KTA5ZArZwP5ZP3HW5qv61zPUAa8aOW6YeKm7WIes1WcR2RudnIVfBJExY1JOcFV8fdDR9IxNW3bYJAd2u37VWVwfYINxGcR56MdlZ3FI8nKfPJa7efS20idVsJpyNFKJ80iBLL6Sy4ZhZ28Mn62aIU3QK3lf6ARg_5FghJWCVNwGKkPJbjEs8JU0caiWIjQO1XT3iE-1LRBqIXWATck0kWJSzcuCCNjWZefBClfjrGsSHyfCc1EYV_qQJWnSaghwxTRXAsw6dNp9esw2rrcHs4e8VBMxe0qXyM3WxA.jpg" referrerpolicy="no-referrer"></blockquote>
     info:
@@ -18,14 +18,14 @@ items:
         甲 级 战 犯，连吃两条已经噎得不行了（创意倒挺好的
       image_urls: []
       reply_url:
-      is_forward: false
+      forward_url:
   - title: reply
     body: <blockquote> <p><a href="https://t.me/myl7s/515"><strong>myl7's nonsence</strong>:</a></p> <p>好奇怪，为什么出的 udp 没拦，却拦了入的 udp，等保？不过套了 gost 也还行倒是</p> </blockquote><p>好吧，还得 PersistentKeepalive，两边都是公网 IP 啊？</p>
     info:
       text: 好吧，还得 PersistentKeepalive，两边都是公网 IP 啊？
       image_urls: []
       reply_url: https://t.me/myl7s/515
-      is_forward: false
+      forward_url:
   - title: with image
     body: <p>啊这……还是不修了吧，应该不怎么影响美观</p><img src="https://cdn5.telesco.pe/file/V9rUS7_DmJhcUjCHPuGhsQb1ie540INkm6DaFpNQ9ffms7YTkqiz2lrPF_e8mggUhCfWndcEU5PJ6SCRMMaLAbOfDyQTO0aXAsibEfeK7zpBE3N3gg3l7WCWnebSA47oSEyxhs1y8HV9utbuHOsULxJJHWb1K0YtOVck158qCbv8FA0GohFbBADgalPJpboCuEQrUH7Jb8GlRpEWVxkf6zxzfD7QJhuIGdhYov2jZinwNmW4jnjf0U1gSYnX7xUPdQKfR95mtMxnMM2UGkteJDIegtJHUalhKH-R3QyujKAGSniQ_aM8rW5lkySzxiJGM8b-EIZxlcvZexfePwSz0Q.jpg" referrerpolicy="no-referrer">
     info:
@@ -33,7 +33,7 @@ items:
       image_urls:
         - https://cdn5.telesco.pe/file/V9rUS7_DmJhcUjCHPuGhsQb1ie540INkm6DaFpNQ9ffms7YTkqiz2lrPF_e8mggUhCfWndcEU5PJ6SCRMMaLAbOfDyQTO0aXAsibEfeK7zpBE3N3gg3l7WCWnebSA47oSEyxhs1y8HV9utbuHOsULxJJHWb1K0YtOVck158qCbv8FA0GohFbBADgalPJpboCuEQrUH7Jb8GlRpEWVxkf6zxzfD7QJhuIGdhYov2jZinwNmW4jnjf0U1gSYnX7xUPdQKfR95mtMxnMM2UGkteJDIegtJHUalhKH-R3QyujKAGSniQ_aM8rW5lkySzxiJGM8b-EIZxlcvZexfePwSz0Q.jpg
       reply_url:
-      is_forward: false
+      forward_url:
   - title: forward
     body: |-
       <p>Forwarded From <b><a href="https://t.me/outvivid/3067"> 层叠 - The Cascading</a></b></p><p>Apache 近期被发现存在路径遍历漏洞，可能导致敏感文件被读取甚至远程代码执行。此漏洞对 Windows 和 Linux 服务器均有影响。从 PoC [1] 我们可以看到，Apache 未能将 <code>%2e</code> 正确地判别为 <code>.</code>，从而未能检测到构造出来的 <code>../</code> 目录（即上级目录）。<br><br>漏洞存在于 2.4.49 和 2.4.50 版本，并在 2.4.51 被修复。<br><br>Cloudflare 用户可使用 [src2] 中描述的规则在 WAF 中阻止类似请求。<br><br><a href="https://repology.org/project/apache/versions" target="_blank" rel="noopener" onclick="return confirm('Open this link?\n\n'+this.href);">查看各个发行版 apache 系列包的更新状态</a>。<br><br>CVE: CVE-2021-41773 / CVE-2021-42013<br><br>src1: <a href="https://httpd.apache.org/security/vulnerabilities_24.html" target="_blank" rel="noopener">https://httpd.apache.org/security/vulnerabilities_24.html</a><br>src2: <a href="https://blog.cloudflare.com/helping-apache-servers-stay-safe-from-zero-day-path-traversal-attacks/" target="_blank" rel="noopener">https://blog.cloudflare.com/helping-apache-servers-stay-safe-from-zero-day-path-traversal-attacks/</a><br><br>1. <a href="https://packetstormsecurity.com/files/164418/Apache-HTTP-Server-2.4.49-Path-Traversal.html" target="_blank" rel="noopener">https://packetstormsecurity.com/files/164418/Apache-HTTP-Server-2.4.49-Path-Traversal.html</a></p><blockquote><b>httpd.apache.org</b><br><b><a href="https://httpd.apache.org/security/vulnerabilities_24.html"> Apache HTTP Server 2.4 vulnerabilities - The Apache HTTP Server Project</a></b><br></blockquote>
@@ -41,7 +41,14 @@ items:
       text: https://t.me/outvivid/3067
       image_urls: []
       reply_url:
-      is_forward: true
+      forward_url: https://t.me/outvivid/3067
+  - title: forward from private
+    body: <p>Forwarded From <b>Rflow</b></p><p><b>中国科学技术大学第八届信息安全大赛（Hackergame 2021）<br><br></b>2021 年度中国科学技术大学第八届信息安全大赛即将开幕。本比赛于线上举行，持续时间长达一周，题目难度梯度提升。在探索解谜的主氛围中，选手将与各色关卡进行较量。比赛已经连续举办七届，往届比赛均顺利举行，影响甚广、规模巨大。<br><br>本系列比赛自第四届起邀请其他高校的学生参加，总参加人数在 2000 人以上。题目分为 4 类，包含了综合技能、程序逆向与漏洞利用、密码学与数学和网站安全类题目，在具有一定教育意义的同时也不失趣味性。<br><br>本次比赛在提高题目质量的同时，也有对新手循序渐进的引导，希望能给各参赛选手带来良好的比赛体验。欢迎大家积极参与，预祝取得满意的成绩！<br><br>赛前动员会将于正式比赛开始前一天举办。动员会上，我们会介绍比赛的注意事项、参赛指南以及一些信息安全技巧。欢迎同学们参加！<br><br><b>比赛网址<br></b><a href="http://hack.lug.ustc.edu.cn/" target="_blank" rel="noopener">hack.lug.ustc.edu.cn</a><br><br><b>时间安排<br></b>比赛动员会：2021年 10 月 22 日 19:00 于 3C201 教室<br>正式比赛时间：2021 年 10 月 23 日 中午 12:00 至 10 月 30 日 中午 12:00（24 日 20:00 至 25 日 8:00 休赛）<br><br><b>QQ群<br></b>科大及合作高校学生请加入：593692532（请在网站注册后再加群）<br>其他非合作高校学生请加入：677132997<br><br><b>合作高校<br></b>浙江大学、吉林大学、南京航空航天大学、东北大学、中山大学、西安电子科技大学、哈尔滨工业大学</p>
+    info:
+      text: https://t.me/myl7s/543 # General message url set in filter_test.go
+      image_urls: []
+      reply_url:
+      forward_url: https://t.me/myl7s/543
   - title: blockquote
     body: |-
       <blockquote> <p><a href="https://t.me/myl7s/559"><strong>myl7's nonsence</strong>:</a></p> <p>想了一个 human-readable byte size 的 grammar（via antlr4），不过由于要 no_std 所以没法直接用 antlr4 的库，等以后有机会自己糊个 LL 用吧</p> </blockquote><p></p><pre>grammar bsize;<br><br>size: Number Space* unit;<br>unit: word | abbr;<br>word: prefix suffix;<br>abbr: pre | suf;<br>prefix: KiloWord | MegaWord | GigaWord | TeraWord | PetaWord | ExaWord;<br>suffix: B (bitBody | byteBody) S?;<br>pre: Kilo | Mega | Giga | Tera | Peta | Exa;<br>suf: B | Byte;<br>byteBody: 'yte';<br>bitBody: 'it';<br><br>Number: Digit+;<br>Space: ' ';<br>KiloWord: Kilo 'ilo';<br>MegaWord: Mega 'ega';<br>GigaWord: Giga 'iga';<br>TeraWord: Tera 'era';<br>PetaWord: Peta 'eta';<br>ExaWord: Exa 'xa';<br>BiSign: 'i';<br>Kilo: 'k' | 'K';<br>Mega: 'm' | 'M';<br>Giga: 'g' | 'G';<br>Tera: 't' | 'T';<br>Peta: 'p' | 'P';<br>Exa: 'e' | 'E';<br>B: 'b';<br>Byte: 'B';<br>S: 's';<br><br>fragment Digit: [0-9];</pre><p></p>
@@ -82,4 +89,4 @@ items:
         fragment Digit: [0-9];
       image_urls: []
       reply_url: https://t.me/myl7s/559
-      is_forward: false
+      forward_url:

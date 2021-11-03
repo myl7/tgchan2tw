@@ -22,7 +22,7 @@ func TestFilterText(t *testing.T) {
 
 	for i := range items.Items {
 		item := items.Items[i]
-		info, err := fetch.FilterText(item.Body)
+		info, err := fetch.FilterText(item.Body, "https://t.me/myl7s/543")
 		if err != nil {
 			t.Error(err)
 		}

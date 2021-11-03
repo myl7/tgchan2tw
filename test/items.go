@@ -13,10 +13,10 @@ type Item struct {
 }
 
 type ItemInfo struct {
-	Text      string   `yaml:"text"`
-	ImageUrls []string `yaml:"image_urls"`
-	ReplyUrl  string   `yaml:"reply_url"`
-	IsForward bool     `yaml:"is_forward"`
+	Text       string   `yaml:"text"`
+	ImageUrls  []string `yaml:"image_urls"`
+	ReplyUrl   string   `yaml:"reply_url"`
+	ForwardUrl string   `yaml:"forward_url"`
 }
 
 func (lhs ItemInfo) EqItemBody(rhs fetch.ItemBody) bool {
@@ -26,7 +26,7 @@ func (lhs ItemInfo) EqItemBody(rhs fetch.ItemBody) bool {
 	if lhs.ReplyUrl != rhs.ReplyUrl {
 		return false
 	}
-	if lhs.IsForward != rhs.IsForward {
+	if lhs.ForwardUrl != rhs.ForwardUrl {
 		return false
 	}
 	if len(lhs.ImageUrls) != len(rhs.ImageUrls) {

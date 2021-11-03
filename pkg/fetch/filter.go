@@ -8,13 +8,13 @@ import (
 )
 
 type ItemBody struct {
-	Text      string
-	ImageUrls []string
-	ReplyUrl  string
-	IsForward bool
+	Text       string
+	ImageUrls  []string
+	ReplyUrl   string
+	ForwardUrl string
 }
 
-func FilterText(body string) (ItemBody, error) {
+func FilterText(body string, selfUrl string) (ItemBody, error) {
 	b := bytes.NewBufferString("<body>" + body + "</body>")
 	h, err := html.Parse(b)
 	if err != nil {
@@ -38,19 +38,26 @@ func FilterText(body string) (ItemBody, error) {
 		}
 	})
 
+	replyUrl := ""
+	forwardUrl := ""
 	res := ""
 	if isForward {
+		if quoteUrl == "" {
+			// If the original message can not be referred by an url, use your Telegram forward message url
+			quoteUrl = selfUrl
+		}
 		res = quoteUrl
-		quoteUrl = ""
+		forwardUrl = quoteUrl
 	} else {
 		res = strings.Join(blocks, "\n")
+		replyUrl = quoteUrl
 	}
 
 	return ItemBody{
-		Text:      res,
-		ImageUrls: imageUrls,
-		ReplyUrl:  quoteUrl,
-		IsForward: isForward,
+		Text:       res,
+		ImageUrls:  imageUrls,
+		ReplyUrl:   replyUrl,
+		ForwardUrl: forwardUrl,
 	}, nil
 }
 
@@ -80,12 +87,7 @@ func filterImageUrls(d *goquery.Document) []string {
 
 func filterHeadQuote(d *goquery.Document) (string, bool) {
 	r := d.Find("body").Children().First()
-
-	quoteUrl := ""
-	href, ok := r.Find("a").Attr("href")
-	if ok {
-		quoteUrl = href
-	}
+	quoteUrl, _ := r.Find("a").Attr("href")
 
 	if goquery.NodeName(r) == "blockquote" {
 		// Ensure it is reply message
@@ -96,6 +98,7 @@ func filterHeadQuote(d *goquery.Document) (string, bool) {
 	isForward := false
 	if strings.HasPrefix(r.Text(), "Forwarded From") {
 		// Ensure it is forward message
+		// Notice: Forward message may also have empty quote url when it is forwarded from a private channel or chat.
 		isForward = true
 	}
 

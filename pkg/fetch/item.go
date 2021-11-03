@@ -28,7 +28,7 @@ func handleItems(items []*gofeed.Item) error {
 			continue
 		}
 
-		body, err := FilterText(item.Description)
+		body, err := FilterText(item.Description, item.Link)
 		if err != nil {
 			return err
 		}
@@ -57,7 +57,7 @@ func handleItems(items []*gofeed.Item) error {
 		}
 		msgs = append(msgs, msg)
 		itemList = append(itemList, []*gofeed.Item{item})
-		isForwardList = append(isForwardList, body.IsForward)
+		isForwardList = append(isForwardList, body.ForwardUrl != "")
 	}
 
 	// Merge two messages when forwarding with comment in Telegram
