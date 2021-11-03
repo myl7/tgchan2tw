@@ -24,8 +24,11 @@ var PollInterval = envInt("POLL_INTERVAL", intPtr(360))
 
 // PollRange The time range of each polling request to RSSHub.
 // The option is directly used as `filter_time` param for RSSHub.
+// PollRange / PollInterval indicates how many times will a message be tried to forward.
+// If your RSSHub is fine enough, set PollRange = 1 * PollInterval, which means only one try.
+// Otherwise, PollRange = 2 * PollInterval or 3 * PollInterval should be better.
 // Unit: s.
-var PollRange = envInt("POLL_RANGE", intPtr(360))
+var PollRange = envInt("POLL_RANGE", intPtr(720))
 
 // DBPath SQLite database file path
 var DBPath = env("DB_PATH", strPtr("/db/db.sqlite"))
