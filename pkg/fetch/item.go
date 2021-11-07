@@ -47,10 +47,17 @@ func handleItems(items []*gofeed.Item) error {
 
 			if len(msgIds) > 0 {
 				replyTo = msgIds[len(msgIds)-1]
+			} else {
+				for j := range msgs {
+					if msgs[j].ItemId == replyId {
+						replyTo = int64(-j)
+					}
+				}
 			}
 		}
 
 		msg := pub.TweetMsg{
+			ItemId:    itemId,
 			Body:      body.Text,
 			ImageUrls: body.ImageUrls,
 			ReplyTo:   replyTo,
@@ -77,8 +84,15 @@ func handleItems(items []*gofeed.Item) error {
 		itemList = append(itemList[:i+1], itemList[i+2:]...)
 	}
 
+	var createdMsgIdList [][]int64
 	for i := range msgs {
-		createdMsgIds, err := pub.Tweet(msgs[i])
+		msg := msgs[i]
+		if msg.ReplyTo < 0 {
+			replyIds := createdMsgIdList[-msg.ReplyTo]
+			msg.ReplyTo = replyIds[len(replyIds)-1]
+		}
+
+		createdMsgIds, err := pub.Tweet(msg)
 		if err != nil {
 			return err
 		}
@@ -98,7 +112,8 @@ func handleItems(items []*gofeed.Item) error {
 			return err
 		}
 
-		log.Println("Tweeted msg", msgs[i], "id(s)", createdMsgIds, "for item(s)", itemIds)
+		log.Println("Tweeted msg", msg, "id(s)", createdMsgIds, "for item(s)", itemIds)
+		createdMsgIdList = append(createdMsgIdList, createdMsgIds)
 	}
 
 	return nil

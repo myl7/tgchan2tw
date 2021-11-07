@@ -15,6 +15,7 @@ import (
 )
 
 type TweetMsg struct {
+	ItemId    int
 	Body      string
 	ImageUrls []string
 	ReplyTo   int64
