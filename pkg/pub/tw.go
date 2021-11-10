@@ -84,6 +84,9 @@ func tweetText(body string, mediaIds []int64, replyTo int64) ([]*twitter.Tweet, 
 		if t != nil {
 			params.InReplyToStatusID = t.ID
 		}
+		if len(mediaIds) > 0 {
+			mediaIds = nil
+		}
 
 		t, _, err = tw.Statuses.Update(bodies[i], params)
 		if err != nil {
