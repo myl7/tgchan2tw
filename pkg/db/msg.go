@@ -1,17 +1,11 @@
+// Copyright 2021-2022 myl7
+// SPDX-License-Identifier: Apache-2.0
+
 package db
 
 import "database/sql"
 
 func CheckItem(id int) ([]int64, error) {
-	db, err := GetDB()
-	if err != nil {
-		return nil, err
-	}
-
-	defer func(db *sql.DB) {
-		_ = db.Close()
-	}(db)
-
 	tx, err := db.Begin()
 	if err != nil {
 		return nil, err

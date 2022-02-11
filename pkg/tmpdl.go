@@ -1,4 +1,7 @@
-package pub
+// Copyright 2021-2022 myl7
+// SPDX-License-Identifier: Apache-2.0
+
+package pkg
 
 import (
 	"bufio"
@@ -8,10 +11,10 @@ import (
 	"net/http"
 )
 
-func tmpDl(urls []string) ([]io.ReadCloser, string, error) {
-	dir, err := ioutil.TempDir(cfg.TmpDir, "dl")
+func tmpDl(urls []string) ([]io.ReadCloser, string) {
+	dir, err := ioutil.TempDir(cfg.Cfg.TmpDir, "dl")
 	if err != nil {
-		return nil, "", err
+		panic(err)
 	}
 
 	var files []io.ReadCloser
@@ -19,26 +22,26 @@ func tmpDl(urls []string) ([]io.ReadCloser, string, error) {
 		s := urls[i]
 		res, err := http.Get(s)
 		if err != nil {
-			return nil, "", err
+			panic(err)
 		}
 
 		f, err := ioutil.TempFile(dir, "image")
 		if err != nil {
-			return nil, "", err
+			panic(err)
 		}
 
 		_, err = bufio.NewReader(res.Body).WriteTo(f)
 		if err != nil {
-			return nil, "", err
+			panic(err)
 		}
 
 		_, err = f.Seek(0, 0)
 		if err != nil {
-			return nil, "", err
+			panic(err)
 		}
 
 		files = append(files, f)
 	}
 
-	return files, dir, nil
+	return files, dir
 }

@@ -1,7 +1,7 @@
 package test
 
 import (
-	"github.com/myl7/tgchan2tw/pkg/pub"
+	"github.com/myl7/tgchan2tw/pkg/tw"
 	twtext "github.com/myl7/twitter-text-parse-go"
 	"gopkg.in/yaml.v2"
 	"os"
@@ -42,7 +42,7 @@ func TestSplit(t *testing.T) {
 		}
 
 		end := res.ValidTextRange.End + 1
-		b, r := pub.SplitTweetBodyOnce(body, end)
+		b, r := tw.SplitTweetBodyOnce(body, end)
 		if block != b {
 			t.Errorf("splitting %s failed: block required:\n%s\nvs got:\n%s\n", text.Title, block, b)
 		}

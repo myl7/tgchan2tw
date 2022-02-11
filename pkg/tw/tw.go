@@ -1,4 +1,7 @@
-package pub
+// Copyright 2021-2022 myl7
+// SPDX-License-Identifier: Apache-2.0
+
+package tw
 
 import (
 	"bufio"
@@ -7,11 +10,11 @@ import (
 	"github.com/dghubble/go-twitter/twitter"
 	"github.com/dghubble/oauth1"
 	"github.com/myl7/tgchan2tw/pkg/cfg"
+	"github.com/myl7/tgchan2tw/pkg/mdl"
 	"io"
 	"io/ioutil"
 	"mime/multipart"
 	"net/http"
-	"os"
 )
 
 type TweetMsg struct {
@@ -21,43 +24,31 @@ type TweetMsg struct {
 	ReplyTo   int64
 }
 
-func Tweet(msg TweetMsg) ([]int64, error) {
-	images, tmpDir, err := tmpDl(msg.ImageUrls)
-	if err != nil {
-		return nil, err
-	}
-
-	defer func(path string) {
-		_ = os.RemoveAll(path)
-	}(tmpDir)
-
+func Tweet(msg *mdl.Msg, images []io.ReadCloser) []int64 {
 	var mediaIds []int64
 	for i := range images {
 		image := images[i]
-		id, err := tweetImage(image)
-		if err != nil {
-			return nil, err
-		}
+		id := tweetImage(image)
 
 		mediaIds = append(mediaIds, id)
 	}
 
-	ts, err := tweetText(msg.Body, mediaIds, msg.ReplyTo)
-	if err != nil {
-		return nil, err
-	}
+	// TODO: Get reply to id
+	replyTo := int64(1)
+
+	ts := tweetText(msg.Body, mediaIds, replyTo)
 
 	var tids []int64
 	for i := range ts {
 		tids = append(tids, ts[i].ID)
 	}
 
-	return tids, nil
+	return tids
 }
 
 func getTwHttpClient() *http.Client {
-	config := oauth1.NewConfig(cfg.TwConsumerKey, cfg.TwConsumerSecret)
-	token := oauth1.NewToken(cfg.TwTokenKey, cfg.TwTokenSecret)
+	config := oauth1.NewConfig(cfg.Cfg.TwConsumerKey, cfg.Cfg.TwConsumerSecret)
+	token := oauth1.NewToken(cfg.Cfg.TwTokenKey, cfg.Cfg.TwTokenSecret)
 	return config.Client(oauth1.NoContext, token)
 }
 
@@ -66,12 +57,12 @@ func getTw() *twitter.Client {
 	return twitter.NewClient(httpClient)
 }
 
-func tweetText(body string, mediaIds []int64, replyTo int64) ([]*twitter.Tweet, error) {
+func tweetText(body string, mediaIds []int64, replyTo int64) []*twitter.Tweet {
 	tw := getTw()
 
 	bodies, err := splitTweetBody(body)
 	if err != nil {
-		return nil, err
+		panic(err)
 	}
 
 	var ts []*twitter.Tweet
@@ -90,16 +81,16 @@ func tweetText(body string, mediaIds []int64, replyTo int64) ([]*twitter.Tweet, 
 
 		t, _, err = tw.Statuses.Update(bodies[i], params)
 		if err != nil {
-			return nil, err
+			panic(err)
 		}
 
 		ts = append(ts, t)
 	}
 
-	return ts, nil
+	return ts
 }
 
-func tweetImage(image io.ReadCloser) (int64, error) {
+func tweetImage(image io.ReadCloser) int64 {
 	defer func(image io.ReadCloser) {
 		_ = image.Close()
 	}(image)
@@ -111,27 +102,27 @@ func tweetImage(image io.ReadCloser) (int64, error) {
 	w := multipart.NewWriter(&b)
 	f, err := w.CreateFormFile("media", "")
 	if err != nil {
-		return 0, err
+		panic(err)
 	}
 
 	_, err = bufio.NewReader(image).WriteTo(f)
 	if err != nil {
-		return 0, err
+		panic(err)
 	}
 
 	err = w.Close()
 	if err != nil {
-		return 0, err
+		panic(err)
 	}
 
 	res, err := client.Post(url, w.FormDataContentType(), &b)
 	if err != nil {
-		return 0, err
+		panic(err)
 	}
 
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		return 0, err
+		panic(err)
 	}
 
 	var r struct {
@@ -139,8 +130,8 @@ func tweetImage(image io.ReadCloser) (int64, error) {
 	}
 	err = json.Unmarshal(body, &r)
 	if err != nil {
-		return 0, err
+		panic(err)
 	}
 
-	return r.MediaId, nil
+	return r.MediaId
 }

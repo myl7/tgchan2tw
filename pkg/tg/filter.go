@@ -1,11 +1,84 @@
-package fetch
+// Copyright 2021-2022 myl7
+// SPDX-License-Identifier: Apache-2.0
+
+package tg
 
 import (
 	"bytes"
 	"github.com/PuerkitoBio/goquery"
+	"github.com/mmcdole/gofeed"
+	"github.com/myl7/tgchan2tw/pkg/mdl"
 	"golang.org/x/net/html"
 	"strings"
 )
+
+func filterItems(items []*gofeed.Item) []*mdl.Msg {
+	var msgs []*mdl.Msg
+	for i := range items {
+		item := items[i]
+
+		// msgIds, err := db.CheckItem(item.GUID)
+		// if err != nil {
+		// 	panic(err)
+		// } else if len(msgIds) != 0 {
+		// 	continue
+		// }
+
+		itemBody := filterText(item.Description, item.Link)
+		m := mdl.Msg{
+			ID:        item.GUID,
+			Body:      itemBody.Text,
+			ImageUrls: itemBody.ImageUrls,
+			ReplyTo:   itemBody.ReplyUrl,
+			FwdFrom:   itemBody.ForwardUrl,
+		}
+		msgs = append(msgs, &m)
+	}
+
+	// Merge two messages when forwarding with comment in Telegram
+	var mergeList []int
+	for i := 0; i < len(msgs); i++ {
+		// If two messages are sent simultaneously and the latter one is forwarded message
+		if i < len(msgs)-1 && items[i].Published == items[i+1].Published && msgs[i+1].FwdFrom != "" {
+			mergeList = append(mergeList, i)
+			i++
+		}
+	}
+	for j := len(mergeList) - 1; j >= 0; j-- {
+		i := mergeList[j]
+		msgs[i].Body = msgs[i].Body + "\n" + msgs[i+1].Body
+		msgs = append(msgs[:i+1], msgs[i+2:]...)
+	}
+
+	// var createdMsgIdList [][]string
+	// for i := range msgs {
+	// 	m := msgs[i]
+	// 	if m.ReplyTo < 0 {
+	// 		replyIds := createdMsgIdList[-m.ReplyTo]
+	// 		m.ReplyTo = replyIds[len(replyIds)-1]
+	// 	}
+	//
+	// 	createdMsgIds, err := tw.Tweet(m)
+	// 	if err != nil {
+	// 		return err
+	// 	}
+	//
+	// 	var itemIDs []string
+	// 	for j := range itemList[i] {
+	// 		itemIDs = append(itemIDs, itemList[i][j].GUID)
+	// 	}
+	//
+	// 	err = db.SetMsgs(createdMsgIds, itemIDs)
+	// 	if err != nil {
+	// 		return err
+	// 	}
+	//
+	// 	log.Println("Tweeted m", m, "id(s)", createdMsgIds, "for item(s)", itemIDs)
+	// 	createdMsgIdList = append(createdMsgIdList, createdMsgIds)
+	// }
+
+	return msgs
+}
 
 type ItemBody struct {
 	Text       string
@@ -14,11 +87,11 @@ type ItemBody struct {
 	ForwardUrl string
 }
 
-func FilterText(body string, selfUrl string) (ItemBody, error) {
+func filterText(body string, selfUrl string) ItemBody {
 	b := bytes.NewBufferString("<body>" + body + "</body>")
 	h, err := html.Parse(b)
 	if err != nil {
-		return ItemBody{}, err
+		panic(err)
 	}
 
 	d := goquery.NewDocumentFromNode(h)
@@ -58,7 +131,7 @@ func FilterText(body string, selfUrl string) (ItemBody, error) {
 		ImageUrls:  imageUrls,
 		ReplyUrl:   replyUrl,
 		ForwardUrl: forwardUrl,
-	}, nil
+	}
 }
 
 func filterImageUrls(d *goquery.Document) []string {
