@@ -136,13 +136,13 @@ func GetConfig() (*Config, error) {
 		return nil, err
 	}
 
-	twTextSplitBackDisableLen, err := getEnvStrDef("TW_TEXT_SPLIT_BACK_DISABLE_RATE", "")
+	twTextSplitBackDisableLen, err := getEnvStrDef("APP_TW_TEXT_SPLIT_BACK_DISABLE_RATE", "")
 	if err != nil {
 		return nil, err
 	}
 	c.TwTextSplitBackDisableLen = twTextSplitBackDisableLen != ""
 
-	c.TmpDir, err = getEnvStrDef("TMP_DIR", "/tmp")
+	c.TmpDir, err = getEnvStrDef("APP_TMP_DIR", "/tmp")
 	if err != nil {
 		return nil, err
 	}
