@@ -1,3 +1,6 @@
+// Copyright 2021-2022 myl7
+// SPDX-License-Identifier: Apache-2.0
+
 package db
 
 import (
@@ -5,24 +8,34 @@ import (
 	_ "embed"
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/myl7/tgchan2tw/pkg/cfg"
-	"log"
 )
 
 func GetDB() (*sql.DB, error) {
-	return sql.Open("sqlite3", cfg.DBPath)
+	return sql.Open("sqlite3", cfg.Cfg.DBPath)
+}
+
+var DB *sql.DB
+
+func LoadDB() error {
+	if DB != nil {
+		return nil
+	}
+
+	var err error
+	DB, err = GetDB()
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 //go:embed schema.sql
 var schema string
 
-func init() {
-	db, err := GetDB()
+func InitDB() error {
+	_, err := DB.Exec(schema)
 	if err != nil {
-		log.Fatalln(err)
+		return err
 	}
-
-	_, err = db.Exec(schema)
-	if err != nil {
-		log.Fatalln(err)
-	}
+	return nil
 }
