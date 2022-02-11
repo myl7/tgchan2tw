@@ -24,7 +24,7 @@ type TweetMsg struct {
 	ReplyTo   int64
 }
 
-func Tweet(msg *mdl.Msg, images []io.ReadCloser) []int64 {
+func Tweet(msg *mdl.Msg, images []io.ReadCloser, replyTo int64) []int64 {
 	var mediaIds []int64
 	for i := range images {
 		image := images[i]
@@ -32,9 +32,6 @@ func Tweet(msg *mdl.Msg, images []io.ReadCloser) []int64 {
 
 		mediaIds = append(mediaIds, id)
 	}
-
-	// TODO: Get reply to id
-	replyTo := int64(1)
 
 	ts := tweetText(msg.Body, mediaIds, replyTo)
 

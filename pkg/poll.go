@@ -29,12 +29,21 @@ func pollRound() {
 	}()
 
 	msgs := tg.Fetch()
-	for i := range msgs {
+	for i := len(msgs) - 1; i >= 0; i-- {
 		msg := msgs[i]
+
+		msgIds := db.CheckTgIn(msg.ReplyTo)
+		if len(msgIds) <= 0 {
+			continue
+		}
+		replyTo := msgIds[len(msgIds)-1]
+
 		images, tmpDir := tmpDl(msg.ImageUrls)
-		twOutIDs := tw.Tweet(msg, images)
+		twOutIDs := tw.Tweet(msg, images, replyTo)
+
 		tgInIDs := msg.InIDs.([]string)
 		db.SetTwOut(twOutIDs, tgInIDs)
+
 		err := os.RemoveAll(tmpDir)
 		if err != nil {
 			panic(err)

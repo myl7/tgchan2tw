@@ -51,33 +51,6 @@ func filterItems(items []*gofeed.Item) []*mdl.Msg {
 		msgs = append(msgs[:i+1], msgs[i+2:]...)
 	}
 
-	// var createdMsgIdList [][]string
-	// for i := range msgs {
-	// 	m := msgs[i]
-	// 	if m.ReplyTo < 0 {
-	// 		replyIds := createdMsgIdList[-m.ReplyTo]
-	// 		m.ReplyTo = replyIds[len(replyIds)-1]
-	// 	}
-	//
-	// 	createdMsgIds, err := tw.Tweet(m)
-	// 	if err != nil {
-	// 		return err
-	// 	}
-	//
-	// 	var itemIDs []string
-	// 	for j := range itemList[i] {
-	// 		itemIDs = append(itemIDs, itemList[i][j].GUID)
-	// 	}
-	//
-	// 	err = db.SetMsgs(createdMsgIds, itemIDs)
-	// 	if err != nil {
-	// 		return err
-	// 	}
-	//
-	// 	log.Println("Tweeted m", m, "id(s)", createdMsgIds, "for item(s)", itemIDs)
-	// 	createdMsgIdList = append(createdMsgIdList, createdMsgIds)
-	// }
-
 	return msgs
 }
 
