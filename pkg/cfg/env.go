@@ -1,3 +1,6 @@
+// Copyright 2021-2022 myl7
+// SPDX-License-Identifier: Apache-2.0
+
 package cfg
 
 import (
@@ -8,37 +11,30 @@ import (
 	"strconv"
 )
 
-func env(key string, val *string) string {
-	v := os.Getenv(key)
+func getEnvStr(k string) (string, error) {
+	v := os.Getenv(k)
 	if v != "" {
-		return v
-	} else if val != nil {
-		return *val
-	} else {
-		panic(errors.New(fmt.Sprintf("env %s is not found", key)))
+		return v, nil
 	}
+	return "", errors.New(fmt.Sprintf("env %s is not found", k))
 }
 
-func strPtr(s string) *string {
-	return &s
-}
-
-func envInt(key string, val *int) int {
-	v := os.Getenv(key)
+func getEnvStrDef(k string, dv string) (string, error) {
+	v := os.Getenv(k)
 	if v != "" {
-		d, err := strconv.Atoi(v)
+		return v, nil
+	}
+	return dv, nil
+}
+
+func getEnvIntDef(k string, dv int) (int, error) {
+	v := os.Getenv(k)
+	if v != "" {
+		i, err := strconv.Atoi(v)
 		if err != nil {
-			panic(errors.New(fmt.Sprintf("env %s is not int", key)))
+			return 0, errors.New(fmt.Sprintf("env %s is not an integer", k))
 		}
-
-		return d
-	} else if val != nil {
-		return *val
-	} else {
-		panic(errors.New(fmt.Sprintf("env %s is not found", key)))
+		return i, nil
 	}
-}
-
-func intPtr(d int) *int {
-	return &d
+	return dv, nil
 }
