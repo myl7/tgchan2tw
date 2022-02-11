@@ -30,7 +30,7 @@ Then use Docker image `myl7/tgchan2tw`:
 ```bash
 docker run -d --restart=always --name tgchan2tw \
   -v ...:/db \
-  -e RSSHUB_HOST=... \
+  -e RSSHUB_URL=... \
   -e TG_CHAN_NAME=... \
   -e TW_CONSUMER_KEY=... \
   -e TW_CONSUMER_SECRET=... \
