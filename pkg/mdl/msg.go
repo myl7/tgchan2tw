@@ -9,4 +9,6 @@ type Msg struct {
 	ImageUrls []string
 	FwdFrom   string
 	ReplyTo   string
+	// InIDs should be an array, but the element type may vary
+	InIDs interface{}
 }

@@ -1,10 +1,10 @@
-CREATE TABLE IF NOT EXISTS items (
-  id INTEGER(4) PRIMARY KEY
+CREATE TABLE IF NOT EXISTS tg_in (
+  id TEXT PRIMARY KEY
 );
-CREATE TABLE IF NOT EXISTS msgs (
+CREATE TABLE IF NOT EXISTS tw_out (
   id INTEGER(8) PRIMARY KEY
 );
-CREATE TABLE IF NOT EXISTS item2msg (
-  item_id INTEGER(4) REFERENCES items (id),
-  msg_id INTEGER(8) REFERENCES msgs (id)
+CREATE TABLE IF NOT EXISTS tg_in_to_tw_out (
+  tg_in_id TEXT REFERENCES tg_in (id),
+  tw_out_id INTEGER(8) REFERENCES tw_out (id)
 );

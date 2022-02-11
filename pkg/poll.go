@@ -5,6 +5,7 @@ package pkg
 
 import (
 	"github.com/myl7/tgchan2tw/pkg/cfg"
+	"github.com/myl7/tgchan2tw/pkg/db"
 	"github.com/myl7/tgchan2tw/pkg/tg"
 	"github.com/myl7/tgchan2tw/pkg/tw"
 	"log"
@@ -29,11 +30,11 @@ func pollRound() {
 
 	msgs := tg.Fetch()
 	for i := range msgs {
-		m := msgs[i]
-		images, tmpDir := tmpDl(m.ImageUrls)
-
-		tids := tw.Tweet(msg, images)
-
+		msg := msgs[i]
+		images, tmpDir := tmpDl(msg.ImageUrls)
+		twOutIDs := tw.Tweet(msg, images)
+		tgInIDs := msg.InIDs.([]string)
+		db.SetTwOut(twOutIDs, tgInIDs)
 		err := os.RemoveAll(tmpDir)
 		if err != nil {
 			panic(err)

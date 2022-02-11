@@ -5,36 +5,36 @@ package db
 
 import "database/sql"
 
-func CheckItem(id int) ([]int64, error) {
-	tx, err := db.Begin()
+func CheckTgIn(id string) []int64 {
+	tx, err := DB.Begin()
 	if err != nil {
-		return nil, err
+		panic(err)
 	}
 
 	defer func(tx *sql.Tx) {
 		_ = tx.Commit()
 	}(tx)
 
-	s := "SELECT id FROM items WHERE id = $1"
+	s := "SELECT id FROM tg_in WHERE id = $1"
 	q, err := tx.Query(s, id)
 	if err != nil {
-		return nil, err
+		panic(err)
 	}
 
 	if !q.Next() {
-		s = "INSERT INTO items VALUES ($1)"
+		s = "INSERT INTO tg_in VALUES ($1)"
 		_, err = tx.Exec(s, id)
 		if err != nil {
-			return nil, err
+			panic(err)
 		}
 
-		return nil, nil
+		return nil
 	}
 
-	s = "SELECT msg_id FROM item2msg WHERE item_id = $1 ORDER BY msg_id"
+	s = "SELECT tw_out_id FROM tg_in_to_tw_out WHERE tg_in_id = $1 ORDER BY tw_out_id"
 	q, err = tx.Query(s, id)
 	if err != nil {
-		return nil, err
+		panic(err)
 	}
 
 	var ids []int64
@@ -42,48 +42,37 @@ func CheckItem(id int) ([]int64, error) {
 	for q.Next() {
 		err := q.Scan(&i)
 		if err != nil {
-			return nil, err
+			panic(err)
 		}
 
 		ids = append(ids, i)
 	}
-	return ids, nil
+	return ids
 }
 
-func SetMsgs(msgIds []int64, itemIds []int) error {
-	db, err := GetDB()
+func SetTwOut(twOutIDs []int64, tgInIDs []string) {
+	tx, err := DB.Begin()
 	if err != nil {
-		return err
-	}
-
-	defer func(db *sql.DB) {
-		_ = db.Close()
-	}(db)
-
-	tx, err := db.Begin()
-	if err != nil {
-		return err
+		panic(err)
 	}
 
 	defer func(tx *sql.Tx) {
 		_ = tx.Commit()
 	}(tx)
 
-	for i := range msgIds {
-		s := "INSERT INTO msgs VALUES ($1)"
-		_, err = tx.Exec(s, msgIds[i])
+	for i := range twOutIDs {
+		s := "INSERT INTO tg_in VALUES ($1)"
+		_, err = tx.Exec(s, twOutIDs[i])
 		if err != nil {
-			return err
+			panic(err)
 		}
 
-		s = "INSERT INTO item2msg VALUES ($1, $2)"
-		for j := range itemIds {
-			_, err = tx.Exec(s, itemIds[j], msgIds[i])
+		s = "INSERT INTO tg_in_to_tw_out VALUES ($1, $2)"
+		for j := range tgInIDs {
+			_, err = tx.Exec(s, tgInIDs[j], twOutIDs[i])
 			if err != nil {
-				return err
+				panic(err)
 			}
 		}
 	}
-
-	return nil
 }

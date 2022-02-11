@@ -7,6 +7,7 @@ import (
 	"bytes"
 	"github.com/PuerkitoBio/goquery"
 	"github.com/mmcdole/gofeed"
+	"github.com/myl7/tgchan2tw/pkg/db"
 	"github.com/myl7/tgchan2tw/pkg/mdl"
 	"golang.org/x/net/html"
 	"strings"
@@ -17,22 +18,21 @@ func filterItems(items []*gofeed.Item) []*mdl.Msg {
 	for i := range items {
 		item := items[i]
 
-		// msgIds, err := db.CheckItem(item.GUID)
-		// if err != nil {
-		// 	panic(err)
-		// } else if len(msgIds) != 0 {
-		// 	continue
-		// }
+		msgIds := db.CheckTgIn(item.GUID)
+		if len(msgIds) != 0 {
+			continue
+		}
 
 		itemBody := filterText(item.Description, item.Link)
-		m := mdl.Msg{
+		msg := mdl.Msg{
 			ID:        item.GUID,
 			Body:      itemBody.Text,
 			ImageUrls: itemBody.ImageUrls,
 			ReplyTo:   itemBody.ReplyUrl,
 			FwdFrom:   itemBody.ForwardUrl,
+			InIDs:     []string{item.GUID},
 		}
-		msgs = append(msgs, &m)
+		msgs = append(msgs, &msg)
 	}
 
 	// Merge two messages when forwarding with comment in Telegram
@@ -47,6 +47,7 @@ func filterItems(items []*gofeed.Item) []*mdl.Msg {
 	for j := len(mergeList) - 1; j >= 0; j-- {
 		i := mergeList[j]
 		msgs[i].Body = msgs[i].Body + "\n" + msgs[i+1].Body
+		msgs[i].InIDs = append(msgs[i].InIDs.([]string), msgs[i+1].InIDs.([]string)...)
 		msgs = append(msgs[:i+1], msgs[i+2:]...)
 	}
 
