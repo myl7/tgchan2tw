@@ -1,4 +1,4 @@
-package conf
+package cfg
 
 // RsshubHost RSSHub host used by the app.
 // The default https://rsshub.app actually cannot work with Telegram.

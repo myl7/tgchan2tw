@@ -4,12 +4,12 @@ import (
 	"database/sql"
 	_ "embed"
 	_ "github.com/mattn/go-sqlite3"
-	"github.com/myl7/tgchan2tw/pkg/conf"
+	"github.com/myl7/tgchan2tw/pkg/cfg"
 	"log"
 )
 
 func GetDB() (*sql.DB, error) {
-	return sql.Open("sqlite3", conf.DBPath)
+	return sql.Open("sqlite3", cfg.DBPath)
 }
 
 //go:embed schema.sql

@@ -2,7 +2,7 @@ package fetch
 
 import (
 	"github.com/mmcdole/gofeed"
-	"github.com/myl7/tgchan2tw/pkg/conf"
+	"github.com/myl7/tgchan2tw/pkg/cfg"
 	"log"
 	"net/url"
 	"path"
@@ -17,7 +17,7 @@ func Poll() error {
 			log.Println(err)
 		}
 
-		time.Sleep(time.Duration(conf.PollInterval) * time.Second)
+		time.Sleep(time.Duration(cfg.PollInterval) * time.Second)
 	}
 
 	return nil
@@ -38,16 +38,16 @@ func pollRound() error {
 }
 
 func reqRsshub() ([]*gofeed.Item, error) {
-	u, err := url.Parse(conf.RsshubHost)
+	u, err := url.Parse(cfg.RsshubHost)
 	if err != nil {
 		return nil, err
 	}
 
-	u.Path = path.Join("/telegram/channel", conf.TgChanName)
+	u.Path = path.Join("/telegram/channel", cfg.TgChanName)
 
 	q := u.Query()
-	q.Set("filter_time", strconv.Itoa(conf.PollRange))
-	q.Set("filterout", conf.PostFilterOut)
+	q.Set("filter_time", strconv.Itoa(cfg.PollRange))
+	q.Set("filterout", cfg.PostFilterOut)
 	u.RawQuery = q.Encode()
 
 	fp := gofeed.NewParser()

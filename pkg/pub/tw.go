@@ -6,7 +6,7 @@ import (
 	"encoding/json"
 	"github.com/dghubble/go-twitter/twitter"
 	"github.com/dghubble/oauth1"
-	"github.com/myl7/tgchan2tw/pkg/conf"
+	"github.com/myl7/tgchan2tw/pkg/cfg"
 	"io"
 	"io/ioutil"
 	"mime/multipart"
@@ -56,8 +56,8 @@ func Tweet(msg TweetMsg) ([]int64, error) {
 }
 
 func getTwHttpClient() *http.Client {
-	config := oauth1.NewConfig(conf.TwConsumerKey, conf.TwConsumerSecret)
-	token := oauth1.NewToken(conf.TwTokenKey, conf.TwTokenSecret)
+	config := oauth1.NewConfig(cfg.TwConsumerKey, cfg.TwConsumerSecret)
+	token := oauth1.NewToken(cfg.TwTokenKey, cfg.TwTokenSecret)
 	return config.Client(oauth1.NoContext, token)
 }
 

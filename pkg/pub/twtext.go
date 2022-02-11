@@ -1,7 +1,7 @@
 package pub
 
 import (
-	"github.com/myl7/tgchan2tw/pkg/conf"
+	"github.com/myl7/tgchan2tw/pkg/cfg"
 	twtext "github.com/myl7/twitter-text-parse-go"
 	"unicode/utf16"
 )
@@ -36,16 +36,16 @@ func SplitTweetBodyOnce(body string, end int) (string, string) {
 	s := utf16.Encode([]rune(body))
 	start := 0
 
-	if conf.TwTextSplitBackDisableRate == "" {
-		start = end * conf.TwTextSplitBackRate / 100
+	if cfg.TwTextSplitBackDisableRate == "" {
+		start = end * cfg.TwTextSplitBackRate / 100
 		sep, ok := findInSplitRange(s, end, start)
 		if ok {
 			return genResAndRemain(s, sep)
 		}
 	}
 
-	if conf.TwTextSplitBackDisableLen == "" {
-		start = end - conf.TwTextSplitBackLen
+	if cfg.TwTextSplitBackDisableLen == "" {
+		start = end - cfg.TwTextSplitBackLen
 		if start < 0 {
 			start = 0
 		}
