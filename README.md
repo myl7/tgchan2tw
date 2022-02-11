@@ -1,6 +1,6 @@
 # tgchan2tw
 
-Automatically forward Telegram channel posts to Twitter
+Auto-forward Telegram channel posts to Twitter status
 
 Used by myself for [@myl7s](https://t.me/myl7s) on Telegram -> [@myl107](https://twitter.com/myl107) on Twitter
 
@@ -25,7 +25,7 @@ So you should deploy a RSSHub on your own.
 See [RSSHub docs about it](https://docs.rsshub.app/install/) for detailed steps
 (You can also find how to "freely" deploy RSSHub like using Heroku or Vercel there).
 
-Then use Docker image `myl7/tgchan2tw`: 
+Then use Docker image `myl7/tgchan2tw`:
 
 ```bash
 docker run -d --restart=always --name tgchan2tw \
@@ -42,7 +42,7 @@ docker run -d --restart=always --name tgchan2tw \
 All data, stored in a SQLite database, are in `/db/db.sqlite` by default.
 Mount it to somewhere to persistent the data.
 
-Use env to configure app options. 
+Use env to configure app options.
 Dotenv is also OK by putting `.env` file into `/app`.
 
 ## Options
@@ -78,4 +78,6 @@ But if the app just missed messages of a few days, this can fix it.
 
 ## License
 
-MIT
+Copyright 2021-2022 myl7
+
+SPDX-License-Identifier: Apache-2.0
