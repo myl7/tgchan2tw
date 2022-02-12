@@ -68,7 +68,7 @@ Semver is used in docker tags, so feel free to use tags like `1`, `1.2`, or `1.2
 
 ## Onetime migration
 
-If you are use the app for the first time, or due to unexpected bug the app stopped, and now you need to restart the app to migrate all leftover Telegram messages again to Twitter --- In these situations you should run a onetime migration.
+If you are going to use the app for the first time, or due to unexpected bug the app stopped, and now you need to restart the app to migrate all leftover Telegram messages again to Twitter --- In these situations you should run a onetime migration.
 
 Onetime migration is to set a so large `PollRange` (like 10000000000) and run the app to let it poll onetime.
 Then the app will try to forward all not forwarded messages again.
