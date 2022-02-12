@@ -7,7 +7,6 @@ import (
 	"bufio"
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"github.com/dghubble/go-twitter/twitter"
 	"github.com/dghubble/oauth1"
 	"github.com/myl7/tgchan2tw/pkg/cfg"
@@ -43,9 +42,6 @@ func Tweet(msg *mdl.Msg, images []io.ReadCloser, replyTo int64) []int64 {
 	for i := range ts {
 		tids = append(tids, ts[i].ID)
 	}
-
-	log.Println(fmt.Sprintf("forwarded tg in msg %s to tw out msgs:", msg.ID), tids)
-
 	return tids
 }
 

@@ -44,7 +44,9 @@ func tmpDl(urls []string) ([]io.ReadCloser, string) {
 		files = append(files, f)
 	}
 
-	log.Printf("downloaded %d tg files\n", len(files))
+	if len(files) > 0 {
+		log.Printf("downloaded %d tg files\n", len(files))
+	}
 
 	return files, dir
 }
