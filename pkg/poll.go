@@ -39,7 +39,11 @@ func pollRound() {
 		replyTo := msgIds[len(msgIds)-1]
 
 		images, tmpDir := tmpDl(msg.ImageUrls)
-		twOutIDs := tw.Tweet(msg, images, replyTo)
+
+		var twOutIDs []int64
+		if !cfg.Cfg.DryRun {
+			twOutIDs = tw.Tweet(msg, images, replyTo)
+		}
 
 		tgInIDs := msg.InIDs.([]string)
 		db.SetTwOut(twOutIDs, tgInIDs)

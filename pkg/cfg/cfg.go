@@ -64,6 +64,9 @@ type Config struct {
 	// Make sure it exists and is accessible by the app.
 	// Multiply directories may be created as tmp dir for different purposes in it.
 	TmpDir string
+
+	// DryRun Run the app but do not actually send the messages to be forwarded to Twitter.
+	DryRun bool
 }
 
 func GetConfig() (*Config, error) {
@@ -146,6 +149,12 @@ func GetConfig() (*Config, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	dryRun, err := getEnvStrDef("APP_DRY_RUN", "")
+	if err != nil {
+		return nil, err
+	}
+	c.DryRun = dryRun != ""
 
 	return &c, nil
 }
