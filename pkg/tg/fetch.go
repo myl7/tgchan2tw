@@ -4,9 +4,11 @@
 package tg
 
 import (
+	"fmt"
 	"github.com/mmcdole/gofeed"
 	"github.com/myl7/tgchan2tw/pkg/cfg"
 	"github.com/myl7/tgchan2tw/pkg/mdl"
+	"log"
 	"net/url"
 	"path"
 	"strconv"
@@ -14,7 +16,17 @@ import (
 
 func Fetch() []*mdl.Msg {
 	items := reqRsshub()
+
+	log.Printf("fetched %d tg feed items\n", len(items))
+
 	msgs := filterItems(items)
+
+	var msgIDs []string
+	for i := range msgs {
+		msgIDs = append(msgIDs, msgs[i].ID)
+	}
+	log.Println(fmt.Sprintf("to forward %d tg in msgs:", len(msgs)), msgIDs)
+
 	return msgs
 }
 

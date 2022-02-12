@@ -7,12 +7,14 @@ import (
 	"bufio"
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"github.com/dghubble/go-twitter/twitter"
 	"github.com/dghubble/oauth1"
 	"github.com/myl7/tgchan2tw/pkg/cfg"
 	"github.com/myl7/tgchan2tw/pkg/mdl"
 	"io"
 	"io/ioutil"
+	"log"
 	"mime/multipart"
 	"net/http"
 )
@@ -33,12 +35,16 @@ func Tweet(msg *mdl.Msg, images []io.ReadCloser, replyTo int64) []int64 {
 		mediaIds = append(mediaIds, id)
 	}
 
+	log.Printf("uploaded %d tw images\n", len(images))
+
 	ts := tweetText(msg.Body, mediaIds, replyTo)
 
 	var tids []int64
 	for i := range ts {
 		tids = append(tids, ts[i].ID)
 	}
+
+	log.Println(fmt.Sprintf("forwarded tg in msg %s to tw out msgs:", msg.ID), tids)
 
 	return tids
 }

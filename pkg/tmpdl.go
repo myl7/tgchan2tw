@@ -8,6 +8,7 @@ import (
 	"github.com/myl7/tgchan2tw/pkg/cfg"
 	"io"
 	"io/ioutil"
+	"log"
 	"net/http"
 )
 
@@ -42,6 +43,8 @@ func tmpDl(urls []string) ([]io.ReadCloser, string) {
 
 		files = append(files, f)
 	}
+
+	log.Printf("downloaded %d tg files\n", len(files))
 
 	return files, dir
 }
