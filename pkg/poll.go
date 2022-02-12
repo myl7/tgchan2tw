@@ -35,12 +35,12 @@ func pollRound() {
 	for i := len(msgs) - 1; i >= 0; i-- {
 		msg := msgs[i]
 
-		msgIds := db.CheckTgIn(msg.ReplyTo)
 		var replyTo int64
-		if len(msgIds) <= 0 {
-			replyTo = 0
-		} else {
-			replyTo = msgIds[len(msgIds)-1]
+		if msg.ReplyTo != "" {
+			msgIds := db.CheckTgIn(msg.ReplyTo)
+			if len(msgIds) > 0 {
+				replyTo = msgIds[len(msgIds)-1]
+			}
 		}
 
 		images, tmpDir := tmpDl(msg.ImageUrls)

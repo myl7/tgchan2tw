@@ -7,9 +7,11 @@ import (
 	"bytes"
 	"github.com/PuerkitoBio/goquery"
 	"github.com/mmcdole/gofeed"
+	"github.com/myl7/tgchan2tw/pkg/cfg"
 	"github.com/myl7/tgchan2tw/pkg/db"
 	"github.com/myl7/tgchan2tw/pkg/mdl"
 	"golang.org/x/net/html"
+	"regexp"
 	"strings"
 )
 
@@ -97,7 +99,13 @@ func FilterText(body string, selfUrl string) ItemBody {
 		forwardUrl = quoteUrl
 	} else {
 		res = strings.Join(blocks, "\n")
-		replyUrl = quoteUrl
+
+		// quote url may be of other channel, filter out the situation
+		reg := regexp.MustCompile(`t[.]me/([^/]+)/`)
+		m := reg.FindStringSubmatch(quoteUrl)
+		if len(m) > 1 && m[1] == cfg.Cfg.TgChanName {
+			replyUrl = quoteUrl
+		}
 	}
 
 	return ItemBody{
