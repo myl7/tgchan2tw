@@ -23,19 +23,19 @@ The app requires a RSSHub server to get structural Telegram channel posts.
 The default https://rsshub.app provided by RSSHub official actually cannot work with Telegram.
 So you should deploy a RSSHub on your own.
 See [RSSHub docs about it](https://docs.rsshub.app/install/) for detailed steps
-(You can also find how to "freely" deploy RSSHub like using Heroku or Vercel there).
+(You can also find how to cost-freely deploy RSSHub like using Heroku or Vercel there).
 
 Then use Docker image `myl7/tgchan2tw`:
 
 ```bash
 docker run -d --restart=always --name tgchan2tw \
   -v ...:/db \
-  -e RSSHUB_URL=... \
-  -e TG_CHAN_NAME=... \
-  -e TW_CONSUMER_KEY=... \
-  -e TW_CONSUMER_SECRET=... \
-  -e TW_TOKEN_KEY=... \
-  -e TW_TOKEN_SECRET=... \
+  -e APP_RSSHUB_URL=... \
+  -e APP_TG_CHAN_NAME=... \
+  -e APP_TW_CONSUMER_KEY=... \
+  -e APP_TW_CONSUMER_SECRET=... \
+  -e APP_TW_TOKEN_KEY=... \
+  -e APP_TW_TOKEN_SECRET=... \
   myl7/tgchan2tw:1
 ```
 
@@ -47,7 +47,7 @@ Dotenv is also OK by putting `.env` file into `/app`.
 
 ## Options
 
-All available options and their default value if exists can be found in [`pkg/conf/options.go`](https://github.com/myl7/tgchan2tw/blob/goshujin-sama/pkg/conf/options.go)
+All available options and their default value if exists can be found in [`pkg/cfg/cfg.go`](https://github.com/myl7/tgchan2tw/blob/main/pkg/cfg/cfg.go)
 
 ## Twitter secrets
 
@@ -62,7 +62,7 @@ Selecting only "Read and Write" should be fine too.
 
 ## Docker tags
 
-`edge` is used to reflect the build of the latest commit.
+`edge` is used for the build of the latest commit.
 `latest` points to the build of the latest release.
 Semver is used in docker tags, so feel free to use tags like `1`, `1.2`, or `1.2.0`
 
