@@ -23,7 +23,7 @@ func filterItems(items []*gofeed.Item) []*mdl.Msg {
 			continue
 		}
 
-		itemBody := filterText(item.Description, item.Link)
+		itemBody := FilterText(item.Description, item.Link)
 		msg := mdl.Msg{
 			ID:        item.GUID,
 			Body:      itemBody.Text,
@@ -61,7 +61,7 @@ type ItemBody struct {
 	ForwardUrl string
 }
 
-func filterText(body string, selfUrl string) ItemBody {
+func FilterText(body string, selfUrl string) ItemBody {
 	b := bytes.NewBufferString("<body>" + body + "</body>")
 	h, err := html.Parse(b)
 	if err != nil {

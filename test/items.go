@@ -1,6 +1,8 @@
 package test
 
-import "github.com/myl7/tgchan2tw/pkg/fetch"
+import (
+	"github.com/myl7/tgchan2tw/pkg/tg"
+)
 
 type Items struct {
 	Items []Item `yaml:"items"`
@@ -19,7 +21,7 @@ type ItemInfo struct {
 	ForwardUrl string   `yaml:"forward_url"`
 }
 
-func (lhs ItemInfo) EqItemBody(rhs fetch.ItemBody) bool {
+func (lhs ItemInfo) EqItemBody(rhs tg.ItemBody) bool {
 	if lhs.Text != rhs.Text {
 		return false
 	}

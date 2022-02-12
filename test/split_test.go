@@ -1,6 +1,7 @@
 package test
 
 import (
+	"github.com/myl7/tgchan2tw/pkg/cfg"
 	"github.com/myl7/tgchan2tw/pkg/tw"
 	twtext "github.com/myl7/twitter-text-parse-go"
 	"gopkg.in/yaml.v2"
@@ -20,6 +21,11 @@ type splitText struct {
 }
 
 func TestSplit(t *testing.T) {
+	err := cfg.LoadConfig()
+	if err != nil {
+		t.Error(err)
+	}
+
 	f, err := os.ReadFile("data/split.yaml")
 	if err != nil {
 		t.Error(err)
