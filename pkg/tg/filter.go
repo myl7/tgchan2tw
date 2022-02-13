@@ -37,11 +37,17 @@ func filterItems(items []*gofeed.Item) []*mdl.Msg {
 		msgs = append(msgs, &msg)
 	}
 
-	// Merge two messages when forwarding with comment in Telegram
+	msgs = mergeFwdMsgs(msgs, items)
+
+	return msgs
+}
+
+// Merge two messages when forwarding with comment in Telegram
+func mergeFwdMsgs(msgs []*mdl.Msg, items []*gofeed.Item) []*mdl.Msg {
 	var mergeList []int
 	for i := 0; i < len(msgs); i++ {
-		// If two messages are sent simultaneously and the latter one is forwarded message
-		if i < len(msgs)-1 && items[i].Published == items[i+1].Published && msgs[i+1].FwdFrom != "" {
+		// If two messages are sent simultaneously and the former one is forwarded message
+		if i < len(msgs)-1 && items[i].Published == items[i+1].Published && msgs[i].FwdFrom != "" {
 			mergeList = append(mergeList, i)
 			i++
 		}
