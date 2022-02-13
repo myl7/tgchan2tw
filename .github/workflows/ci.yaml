@@ -7,7 +7,7 @@ on:
     types:
       - published
 jobs:
-  cicd:
+  ci:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -20,6 +20,9 @@ jobs:
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}}
+          labels: |
+            org.opencontainers.image.authors=myl7 <myl@myl.moe>
+            org.opencontainers.image.documentation=https://github.com/myl7/tgchan2tw
       - uses: actions/setup-go@v2
         with:
           go-version: '^1.17'

@@ -9,4 +9,5 @@ FROM alpine:latest
 WORKDIR /app
 COPY --from=0 /app/tgchan2tw /app/tgchan2tw
 RUN mkdir /db
+VOLUME ["/db"]
 ENTRYPOINT ["./tgchan2tw"]
