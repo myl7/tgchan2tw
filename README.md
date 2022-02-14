@@ -14,7 +14,8 @@ Used by myself for [@myl7s](https://t.me/myl7s) on Telegram -> [@myl107](https:/
 - **Split status if reaching Twitter length limit**: While Telegram generously allow you to send so long message, Twitter status length limit is kinda annoying. The app will handle this, automatically and properly split a Telegram message into several Twitter statuses to fit the Twitter requirement.
   - What is more, the splitting will be done in a wise way, as the app will search spaces or punctuations (including Chinese full-width punctuations) to decide the splitting point.
 - **Exclude specific messages from forwarding by tags**: Thanks to `filterout` param of RSSHub
-- **Include retry**: `PollRange` / `PollInterval` should be the total retry times
+- **Retry**: `PollRange` / `PollInterval` should be the total retry times
+- **Error report**: Set SMTP and email to get notification when any forwarding failed
 
 Feel free to raise new feature request using "Issue" panel!
 
