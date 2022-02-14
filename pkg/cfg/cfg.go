@@ -3,6 +3,8 @@
 
 package cfg
 
+import "os"
+
 type Config struct {
 	// RsshubUrl RSSHub url used by the app.
 	// The default https://rsshub.app actually cannot work with Telegram.
@@ -67,6 +69,22 @@ type Config struct {
 
 	// DryRun Run the app but do not actually send the messages to be forwarded to Twitter.
 	DryRun bool
+
+	// OnErrEmail If not empty, report error messages to the email address. Requires SMTP is configured and enabled.
+	OnErrEmail string
+
+	// Name Descriptive name to identify the instance when in situations like error report.
+	// Use server hostname by default.
+	Name string
+
+	// DisableSmtp The following options configure SMTP for services like error report.
+	// TLS/SSL and STARTTLS is automatically detected.
+	DisableSmtp  bool
+	SmtpHost     string
+	SmtpPort     int // 465 by default
+	SmtpUsername string
+	SmtpPassword string
+	SmtpSender   string
 }
 
 func GetConfig() (*Config, error) {
@@ -155,6 +173,55 @@ func GetConfig() (*Config, error) {
 		return nil, err
 	}
 	c.DryRun = dryRun != ""
+
+	c.OnErrEmail, err = getEnvStrDef("APP_ON_ERROR_EMAIL", "")
+	if err != nil {
+		return nil, err
+	}
+
+	name, err := getEnvStrDef("APP_NAME", "")
+	if err != nil {
+		return nil, err
+	}
+	if name != "" {
+		c.Name = name
+	} else {
+		c.Name, err = os.Hostname()
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	disableSmtp, err := getEnvStrDef("APP_DISABLE_SMTP", "")
+	if err != nil {
+		return nil, err
+	}
+	c.DisableSmtp = disableSmtp != ""
+
+	c.SmtpHost, err = getEnvStrDef("APP_SMTP_HOST", "")
+	if err != nil {
+		return nil, err
+	}
+
+	c.SmtpPort, err = getEnvIntDef("APP_SMTP_PORT", 587)
+	if err != nil {
+		return nil, err
+	}
+
+	c.SmtpUsername, err = getEnvStrDef("APP_SMTP_USERNAME", "")
+	if err != nil {
+		return nil, err
+	}
+
+	c.SmtpPassword, err = getEnvStrDef("APP_SMTP_PASSWORD", "")
+	if err != nil {
+		return nil, err
+	}
+
+	c.SmtpSender, err = getEnvStrDef("APP_SMTP_SENDER", "")
+	if err != nil {
+		return nil, err
+	}
 
 	return &c, nil
 }

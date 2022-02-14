@@ -13,6 +13,7 @@ import (
 	"log"
 	"os"
 	"regexp"
+	"runtime/debug"
 	"strconv"
 	"time"
 )
@@ -28,7 +29,13 @@ func pollRound() {
 	defer func() {
 		r := recover()
 		if r != nil {
-			log.Println(r)
+			errMsg := fmt.Sprintln(r) + fmt.Sprint(string(debug.Stack()))
+			errs := reportErr(errMsg)
+			if len(errs) > 0 {
+				for i := range errs {
+					log.Println(errs[i])
+				}
+			}
 		}
 	}()
 
