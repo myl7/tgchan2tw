@@ -20,8 +20,8 @@ func filterItems(items []*gofeed.Item) []*mdl.Msg {
 	for i := range items {
 		item := items[i]
 
-		msgIds := db.CheckTgIn(item.GUID)
-		if len(msgIds) != 0 {
+		exist := db.GetTgIn(item.GUID)
+		if exist {
 			continue
 		}
 

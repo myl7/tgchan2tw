@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"github.com/myl7/tgchan2tw/pkg/cfg"
 	"github.com/myl7/tgchan2tw/pkg/db"
+	"github.com/myl7/tgchan2tw/pkg/mdl"
 	"github.com/myl7/tgchan2tw/pkg/tg"
 	"github.com/myl7/tgchan2tw/pkg/tw"
 	"log"
@@ -34,35 +35,59 @@ func pollRound() {
 	msgs := tg.Fetch()
 	for i := len(msgs) - 1; i >= 0; i-- {
 		msg := msgs[i]
+		handleMsg(msg)
+	}
+}
 
-		var replyTo int64
-		if msg.ReplyTo != "" {
-			msgIds := db.CheckTgIn(msg.ReplyTo)
-			if len(msgIds) > 0 {
-				replyTo = msgIds[len(msgIds)-1]
+func handleMsg(msg *mdl.Msg) {
+	tx, err := db.DB.Begin()
+	if err != nil {
+		panic(err)
+	}
+
+	ok := false
+	defer func() {
+		if !ok {
+			err := tx.Rollback()
+			if err != nil {
+				panic(err)
 			}
 		}
+	}()
 
-		images, tmpDir := tmpDl(msg.ImageUrls)
-
-		log.Println("to forward msg:", "msg =", msg, "reply to tw ID =", replyTo, "len of images =", len(images))
-
-		var twOutIDs []int64
-		if cfg.Cfg.DryRun {
-			twOutIDs = getFakeTwOutIDs(msg.ID)
-		} else {
-			twOutIDs = tw.Tweet(msg, images, replyTo)
+	var replyTo int64
+	if msg.ReplyTo != "" {
+		msgIds := db.GetTgInToTwOut(tx, msg.ReplyTo)
+		if len(msgIds) > 0 {
+			replyTo = msgIds[len(msgIds)-1]
 		}
+	}
 
-		tgInIDs := msg.InIDs.([]string)
-		db.SetTwOut(twOutIDs, tgInIDs)
+	images, tmpDir := tmpDl(msg.ImageUrls)
 
-		log.Println(fmt.Sprintf("forwarded tg in msg %s to tw out msgs:", msg.ID), twOutIDs)
+	log.Println("to forward msg:", "msg =", msg, "reply to tw ID =", replyTo, "len of images =", len(images))
 
-		err := os.RemoveAll(tmpDir)
-		if err != nil {
-			panic(err)
-		}
+	var twOutIDs []int64
+	if cfg.Cfg.DryRun {
+		twOutIDs = getFakeTwOutIDs(msg.ID)
+	} else {
+		twOutIDs = tw.Tweet(msg, images, replyTo)
+	}
+
+	tgInIDs := msg.InIDs.([]string)
+	db.SetTgInAndTwOut(tx, twOutIDs, tgInIDs)
+
+	log.Println(fmt.Sprintf("forwarded tg in msg %s to tw out msgs:", msg.ID), twOutIDs)
+
+	err = os.RemoveAll(tmpDir)
+	if err != nil {
+		panic(err)
+	}
+
+	ok = true
+	err = tx.Commit()
+	if err != nil {
+		panic(err)
 	}
 }
 

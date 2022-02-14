@@ -5,34 +5,22 @@ package db
 
 import "database/sql"
 
-func CheckTgIn(id string) []int64 {
-	tx, err := DB.Begin()
-	if err != nil {
-		panic(err)
-	}
-
-	defer func(tx *sql.Tx) {
-		_ = tx.Commit()
-	}(tx)
-
+func GetTgIn(id string) bool {
 	s := "SELECT id FROM tg_in WHERE id = $1"
-	q, err := tx.Query(s, id)
+	q, err := DB.Query(s, id)
 	if err != nil {
 		panic(err)
 	}
 
-	if !q.Next() {
-		s = "INSERT INTO tg_in VALUES ($1)"
-		_, err = tx.Exec(s, id)
-		if err != nil {
-			panic(err)
-		}
-
-		return nil
+	if q.Next() {
+		return true
 	}
+	return false
+}
 
-	s = "SELECT tw_out_id FROM tg_in_to_tw_out WHERE tg_in_id = $1 ORDER BY tw_out_id"
-	q, err = tx.Query(s, id)
+func GetTgInToTwOut(tx *sql.Tx, id string) []int64 {
+	s := "SELECT tw_out_id FROM tg_in_to_tw_out WHERE tg_in_id = $1 ORDER BY tw_out_id"
+	q, err := tx.Query(s, id)
 	if err != nil {
 		panic(err)
 	}
@@ -50,24 +38,23 @@ func CheckTgIn(id string) []int64 {
 	return ids
 }
 
-func SetTwOut(twOutIDs []int64, tgInIDs []string) {
-	tx, err := DB.Begin()
-	if err != nil {
-		panic(err)
+func SetTgInAndTwOut(tx *sql.Tx, twOutIDs []int64, tgInIDs []string) {
+	for i := range tgInIDs {
+		s := "INSERT INTO tg_in (id) VALUES ($1)"
+		_, err := tx.Exec(s, tgInIDs[i])
+		if err != nil {
+			panic(err)
+		}
 	}
 
-	defer func(tx *sql.Tx) {
-		_ = tx.Commit()
-	}(tx)
-
 	for i := range twOutIDs {
-		s := "INSERT INTO tg_in VALUES ($1)"
-		_, err = tx.Exec(s, twOutIDs[i])
+		s := "INSERT INTO tw_out (id) VALUES ($1)"
+		_, err := tx.Exec(s, twOutIDs[i])
 		if err != nil {
 			panic(err)
 		}
 
-		s = "INSERT INTO tg_in_to_tw_out VALUES ($1, $2)"
+		s = "INSERT INTO tg_in_to_tw_out (tg_in_id, tw_out_id) VALUES ($1, $2)"
 		for j := range tgInIDs {
 			_, err = tx.Exec(s, tgInIDs[j], twOutIDs[i])
 			if err != nil {
