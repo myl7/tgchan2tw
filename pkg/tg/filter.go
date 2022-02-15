@@ -103,6 +103,8 @@ func FilterText(body string, selfUrl string) ItemBody {
 		}
 		res = quoteUrl
 		forwardUrl = quoteUrl
+		// Images contained in fwd msgs are of the fwded msgs and should not be taken to Twitter
+		imageUrls = []string{}
 	} else {
 		res = strings.Join(blocks, "\n")
 
