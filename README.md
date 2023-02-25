@@ -1,5 +1,7 @@
 # tgchan2tw
 
+**Archived since Twitter starts to price API**
+
 Auto-forward Telegram channel posts to Twitter status
 
 Used by myself for [@myl7s](https://t.me/myl7s) on Telegram -> [@myl107](https://twitter.com/myl107) on Twitter
